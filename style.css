@@ -3,18 +3,18 @@ Theme Name: EC Nordheide v2
 Theme URI: https://www.ec-nordheide.de
 Author: EC Nordheide
 Description: Neues, eigenständiges Theme für den EC Nordheide.
-Version: 0.2.0
+Version: 0.3.0
 Text Domain: ec-nordheide-v2
 */
 
 :root {
-	--ec-ink: #202020;
-	--ec-ink-soft: #526268;
-	--ec-paper: #f4f7ec;
-	--ec-paper-strong: #fbfcf6;
-	--ec-orange: #e9a323;
-	--ec-orange-dark: #bf7c10;
-	--ec-green: #66864a;
+	--ec-ink: #213214;
+	--ec-ink-soft: #526348;
+	--ec-paper: #f4f9ee;
+	--ec-paper-strong: #f4f9ee;
+	--ec-orange: #92c355;
+	--ec-orange-dark: #6e9240;
+	--ec-green: #6e9240;
 	--ec-line: rgba(32, 32, 32, 0.12);
 	--ec-radius: 1.15rem;
 	--ec-shadow: 0 1rem 3rem rgba(16, 24, 18, 0.14);
@@ -71,7 +71,7 @@ img { max-width: 100%; height: auto; }
 .ec-hex-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2rem; margin-top: 4rem; }
 .ec-hex-card { text-align: center; }
 .ec-hexagon { display: grid; width: 7rem; aspect-ratio: 1; margin: 1rem auto 0; place-items: center; background: var(--ec-orange); clip-path: polygon(25% 6.7%, 75% 6.7%, 100% 50%, 75% 93.3%, 25% 93.3%, 0 50%); }
-.ec-hexagon--gray { background: #c9cbc8; }
+.ec-hexagon--gray { background: #d9ded4; }
 .ec-link-band { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .8rem; }
 .ec-link-card { min-height: 12rem; display: flex; align-items: flex-end; border-radius: var(--ec-radius); padding: 1.2rem; background: linear-gradient(180deg, rgba(34,60,28,.15), rgba(0,0,0,.85)), var(--ec-card-image, var(--ec-green)); background-position: center; background-size: cover; color: #fff; font-size: 1.35rem; font-weight: 800; text-decoration: none; }
 .ec-news { text-align: center; }

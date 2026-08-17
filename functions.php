@@ -7,7 +7,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'EC_NORDHEIDE_V2_VERSION', '0.2.0' );
+define( 'EC_NORDHEIDE_V2_VERSION', '0.3.0' );
 
 // GitHub-basierte Theme-Updates. Das Repository wird als Release-Quelle verwendet.
 $ec_nordheide_update_checker = get_theme_file_path( 'lib/plugin-update-checker/plugin-update-checker.php' );
@@ -88,7 +88,18 @@ function ec_nordheide_v2_fallback_menu() {
 
 function ec_nordheide_v2_hero_image() {
 	$options = ec_nordheide_v2_get_options();
-	return ! empty( $options['hero_image_id'] ) ? esc_url( wp_get_attachment_image_url( (int) $options['hero_image_id'], 'full' ) ) : '';
+	if ( ! empty( $options['hero_image_id'] ) ) {
+		return esc_url( wp_get_attachment_image_url( (int) $options['hero_image_id'], 'full' ) );
+	}
+	return esc_url( get_theme_file_uri( 'assets/images/brand/hero-bible.jpg' ) );
+}
+
+function ec_nordheide_v2_logo_url() {
+	$options = ec_nordheide_v2_get_options();
+	if ( ! empty( $options['logo_id'] ) ) {
+		return esc_url( wp_get_attachment_image_url( (int) $options['logo_id'], 'medium' ) );
+	}
+	return esc_url( get_theme_file_uri( 'assets/images/brand/ec-logo-wide-left-black.png' ) );
 }
 
 function ec_nordheide_v2_get_options() {
@@ -105,9 +116,9 @@ function ec_nordheide_v2_get_options() {
 		'instagram_url'    => '',
 		'spotify_url'      => '',
 		'linktree_url'     => '',
-		'color_orange'    => '#e9a323',
-		'color_paper'     => '#f4f7ec',
-		'color_ink'       => '#202020',
+		'color_orange'    => '#92c355',
+		'color_paper'     => '#f4f9ee',
+		'color_ink'       => '#213214',
 	);
 	return wp_parse_args( get_option( 'ec_nordheide_v2_options', array() ), $defaults );
 }
@@ -187,7 +198,7 @@ function ec_nordheide_v2_render_settings_page() {
 			</table>
 			<h2><?php esc_html_e( 'Farben', 'ec-nordheide-v2' ); ?></h2>
 			<table class="form-table" role="presentation">
-				<?php ec_nordheide_v2_color_field( 'color_orange', __( 'CTA-Orange', 'ec-nordheide-v2' ), $options['color_orange'] ); ?>
+				<?php ec_nordheide_v2_color_field( 'color_orange', __( 'Akzent-/CTA-Farbe', 'ec-nordheide-v2' ), $options['color_orange'] ); ?>
 				<?php ec_nordheide_v2_color_field( 'color_paper', __( 'Off-White', 'ec-nordheide-v2' ), $options['color_paper'] ); ?>
 				<?php ec_nordheide_v2_color_field( 'color_ink', __( 'Dunkle Farbe', 'ec-nordheide-v2' ), $options['color_ink'] ); ?>
 			</table>

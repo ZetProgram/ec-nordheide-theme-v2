@@ -16,6 +16,7 @@ Das Theme übernimmt Präsentation, Layout und Designsystem. Inhalte und eigenst
 - News-Loop aus WordPress-Beiträgen
 - responsive Navigation
 - eigenes Backend-Menü „EC Nordheide“ für Logo, Hero, CTA, Footer, Links und Farben
+- mitgeliefertes Hero-Foto sowie schwarze und weiße EC-Logo-Variante
 
 ## Nächste Schritte
 
