@@ -3,7 +3,7 @@ Theme Name: EC Nordheide v2
 Theme URI: https://www.ec-nordheide.de
 Author: EC Nordheide
 Description: Neues, eigenständiges Theme für den EC Nordheide.
-Version: 0.3.1
+Version: 0.3.2
 Text Domain: ec-nordheide-v2
 */
 
@@ -79,6 +79,14 @@ img { max-width: 100%; height: auto; }
 .ec-news-card { overflow: hidden; border-radius: var(--ec-radius); background: #fff; box-shadow: 0 .7rem 2rem rgba(32,32,32,.08); }
 .ec-news-card__body { padding: 1.25rem; }
 .ec-news-card h3 { margin: 0; font-size: 1.3rem; line-height: 1.1; }
+.ec-page__container { max-width: 62rem; padding-top: 4rem; }
+.ec-page__article { max-width: 58rem; }
+.ec-page__image { margin: 2rem 0; overflow: hidden; border-radius: var(--ec-radius); }
+.ec-page__content { margin-top: 2rem; color: var(--ec-ink-soft); font-size: 1.08rem; }
+.ec-page__content > * { max-width: 100%; }
+.ec-page__content h2, .ec-page__content h3 { color: var(--ec-ink); line-height: 1.1; }
+.ec-page__content a { color: var(--ec-green); font-weight: 700; }
+.ec-page__content img { border-radius: .8rem; }
 .site-footer { padding: 4rem 0 1.5rem; background: var(--ec-paper); }
 .site-footer__grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 2rem; }
 .site-footer__title { margin: 0; font-size: clamp(2.5rem, 7vw, 5.5rem); font-weight: 300; letter-spacing: -.06em; }
