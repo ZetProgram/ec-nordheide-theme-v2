@@ -7,7 +7,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'EC_NORDHEIDE_V2_VERSION', '0.3.0' );
+define( 'EC_NORDHEIDE_V2_VERSION', '0.3.1' );
 
 // GitHub-basierte Theme-Updates. Das Repository wird als Release-Quelle verwendet.
 $ec_nordheide_update_checker = get_theme_file_path( 'lib/plugin-update-checker/plugin-update-checker.php' );
@@ -19,8 +19,8 @@ if ( file_exists( $ec_nordheide_update_checker ) ) {
 			get_theme_root() . '/ec-nordheide-theme-v2',
 			'ec-nordheide-theme-v2'
 		);
-		$ec_nordheide_updater->setBranch( 'production' );
-		$ec_nordheide_updater->getVcsApi()->enableReleaseAssets();
+		// Stable-Versionen kommen aus den GitHub-Releases, nicht aus dem Quell-Branch.
+		$ec_nordheide_updater->getVcsApi()->enableReleaseAssets( '/\.zip$/i' );
 		if ( defined( 'EC_NORDHEIDE_GITHUB_TOKEN' ) && EC_NORDHEIDE_GITHUB_TOKEN ) {
 			$ec_nordheide_updater->setAuthentication( EC_NORDHEIDE_GITHUB_TOKEN );
 		}
