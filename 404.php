@@ -1,0 +1,1 @@
+<?php get_header(); ?><main class="ec-section ec-section--paper"><div class="ec-container"><h1 class="ec-heading">Seite nicht gefunden</h1><p class="ec-copy">Die gewünschte Seite existiert leider nicht.</p></div></main><?php get_footer(); ?>

@@ -1,0 +1,15 @@
+# Build- und Systemdateien
+node_modules/
+vendor/
+dist/
+.DS_Store
+Thumbs.db
+*.log
+
+# Lokale Konfiguration
+.env
+.env.local
+
+# IDE
+.vscode/
+.idea/

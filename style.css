@@ -1,0 +1,97 @@
+/*
+Theme Name: EC Nordheide v2
+Theme URI: https://www.ec-nordheide.de
+Author: EC Nordheide
+Description: Neues, eigenständiges Theme für den EC Nordheide.
+Version: 0.1.0
+Text Domain: ec-nordheide-v2
+*/
+
+:root {
+	--ec-ink: #202020;
+	--ec-ink-soft: #526268;
+	--ec-paper: #f4f7ec;
+	--ec-paper-strong: #fbfcf6;
+	--ec-orange: #e9a323;
+	--ec-orange-dark: #bf7c10;
+	--ec-green: #66864a;
+	--ec-line: rgba(32, 32, 32, 0.12);
+	--ec-radius: 1.15rem;
+	--ec-shadow: 0 1rem 3rem rgba(16, 24, 18, 0.14);
+	--ec-content: 72rem;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+	margin: 0;
+	background: var(--ec-paper);
+	color: var(--ec-ink);
+	font-family: Arial, Helvetica, sans-serif;
+	line-height: 1.55;
+}
+a { color: inherit; }
+img { max-width: 100%; height: auto; }
+.screen-reader-text {
+	border: 0; clip: rect(1px, 1px, 1px, 1px); clip-path: inset(50%);
+	height: 1px; margin: -1px; overflow: hidden; padding: 0;
+	position: absolute; width: 1px; word-wrap: normal !important;
+}
+.site-shell { min-height: 100vh; overflow: hidden; }
+.ec-container { width: min(calc(100% - 2rem), var(--ec-content)); margin-inline: auto; }
+.ec-section { padding: clamp(4rem, 8vw, 8rem) 0; }
+.ec-section--paper { background: var(--ec-paper); }
+.ec-section--dark { background: var(--ec-ink); color: var(--ec-paper-strong); }
+.ec-kicker { margin: 0 0 .7rem; color: var(--ec-orange); font-size: .82rem; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; }
+.ec-heading { margin: 0; color: var(--ec-ink-soft); font-size: clamp(2rem, 4vw, 3.6rem); line-height: 1.03; text-transform: uppercase; }
+.ec-heading--light { color: var(--ec-paper-strong); }
+.ec-copy { max-width: 52rem; margin: 1.5rem auto 0; color: var(--ec-ink-soft); font-size: clamp(1rem, 1.7vw, 1.25rem); }
+.ec-button { display: inline-flex; align-items: center; justify-content: center; border-radius: .8rem; padding: .75rem 1.05rem; background: var(--ec-orange); color: #fff; font-weight: 800; text-decoration: none; transition: transform .2s ease, background .2s ease; }
+.ec-button:hover, .ec-button:focus-visible { background: var(--ec-orange-dark); color: #fff; transform: translateY(-2px); }
+
+.site-header { position: absolute; z-index: 20; top: 1rem; left: 50%; width: min(calc(100% - 2rem), var(--ec-content)); transform: translateX(-50%); }
+.site-header__inner { display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; border-radius: 1rem; padding: .7rem 1rem .7rem 1.2rem; background: rgba(250, 252, 245, .96); box-shadow: var(--ec-shadow); }
+.site-brand { display: inline-flex; align-items: center; gap: .7rem; color: var(--ec-ink); font-weight: 800; line-height: 1.05; text-decoration: none; }
+.site-brand__mark { display: grid; width: 2.4rem; height: 2.4rem; place-items: center; border: 3px solid currentColor; border-radius: 50%; font-size: 1.25rem; }
+.site-brand__text { display: grid; font-size: .72rem; letter-spacing: .02em; text-transform: uppercase; }
+.site-brand__text span:last-child { font-weight: 400; }
+.site-nav ul { display: flex; align-items: center; gap: 1.25rem; margin: 0; padding: 0; list-style: none; }
+.site-nav a { color: var(--ec-ink); font-size: .95rem; text-decoration: none; }
+.site-nav a:hover, .site-nav a:focus-visible { color: var(--ec-orange-dark); }
+.site-nav .menu-item--cta a, .site-nav a.menu-item--cta { border-radius: .75rem; padding: .6rem .85rem; background: var(--ec-orange); color: #fff; font-weight: 800; }
+.menu-toggle { display: none; border: 0; background: transparent; font-size: 1.5rem; }
+
+.ec-hero { position: relative; display: grid; min-height: min(58rem, 100vh); align-items: center; background: linear-gradient(90deg, rgba(18, 17, 12, .82), rgba(18, 17, 12, .3)), linear-gradient(180deg, rgba(0,0,0,.35), rgba(0,0,0,.62)), var(--ec-hero-image, #302817); background-position: center; background-size: cover; color: var(--ec-paper-strong); }
+.ec-hero__content { padding-top: 6rem; }
+.ec-hero__title { max-width: 58rem; margin: 0; font-size: clamp(3rem, 8vw, 7rem); font-weight: 800; line-height: .92; letter-spacing: -.04em; text-transform: uppercase; }
+.ec-hero__subtitle { margin: 1rem 0 1.8rem; font-size: clamp(1.4rem, 3vw, 2.25rem); }
+.ec-intro { text-align: center; }
+.ec-intro__copy { max-width: 58rem; margin-inline: auto; font-weight: 700; color: var(--ec-ink-soft); }
+.ec-hex-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2rem; margin-top: 4rem; }
+.ec-hex-card { text-align: center; }
+.ec-hexagon { display: grid; width: 7rem; aspect-ratio: 1; margin: 1rem auto 0; place-items: center; background: var(--ec-orange); clip-path: polygon(25% 6.7%, 75% 6.7%, 100% 50%, 75% 93.3%, 25% 93.3%, 0 50%); }
+.ec-hexagon--gray { background: #c9cbc8; }
+.ec-link-band { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .8rem; }
+.ec-link-card { min-height: 12rem; display: flex; align-items: flex-end; border-radius: var(--ec-radius); padding: 1.2rem; background: linear-gradient(180deg, rgba(34,60,28,.15), rgba(0,0,0,.85)), var(--ec-card-image, var(--ec-green)); background-position: center; background-size: cover; color: #fff; font-size: 1.35rem; font-weight: 800; text-decoration: none; }
+.ec-news { text-align: center; }
+.ec-news__list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.25rem; margin-top: 3rem; text-align: left; }
+.ec-news-card { overflow: hidden; border-radius: var(--ec-radius); background: #fff; box-shadow: 0 .7rem 2rem rgba(32,32,32,.08); }
+.ec-news-card__body { padding: 1.25rem; }
+.ec-news-card h3 { margin: 0; font-size: 1.3rem; line-height: 1.1; }
+.site-footer { padding: 4rem 0 1.5rem; background: var(--ec-paper); }
+.site-footer__grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 2rem; }
+.site-footer__title { margin: 0; font-size: clamp(2.5rem, 7vw, 5.5rem); font-weight: 300; letter-spacing: -.06em; }
+.site-footer__bottom { display: flex; justify-content: space-between; gap: 1rem; margin-top: 4rem; padding-top: 1rem; border-top: 1px solid var(--ec-line); color: var(--ec-ink-soft); font-size: .85rem; }
+
+@media (max-width: 800px) {
+	.site-header__inner { flex-wrap: wrap; }
+	.menu-toggle { display: block; }
+	.site-nav { display: none; width: 100%; }
+	.site-nav.is-open { display: block; }
+	.site-nav ul { align-items: stretch; flex-direction: column; gap: .3rem; padding-top: .5rem; }
+	.site-nav a { display: block; padding: .55rem 0; }
+	.ec-hero { min-height: 45rem; }
+	.ec-hex-grid, .ec-link-band, .ec-news__list, .site-footer__grid { grid-template-columns: 1fr; }
+	.ec-link-card { min-height: 9rem; }
+	.site-footer__bottom { flex-direction: column; margin-top: 2.5rem; }
+}

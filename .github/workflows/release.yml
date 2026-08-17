@@ -1,0 +1,60 @@
+name: Build and release theme
+
+on:
+  push:
+    branches: [production]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Read version
+        id: version
+        shell: bash
+        run: |
+          VERSION=$(grep -iE '^Version:' style.css | head -1 | sed -E 's/^Version:[[:space:]]*//I' | tr -d '\r')
+          test -n "$VERSION"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Create tag if needed
+        shell: bash
+        run: |
+          TAG="v${{ steps.version.outputs.version }}"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if ! git rev-parse "$TAG" >/dev/null 2>&1; then
+            git tag "$TAG"
+            git push origin "$TAG"
+          fi
+
+      - name: Build installable ZIP
+        shell: bash
+        run: |
+          set -e
+          mkdir -p dist/ec-nordheide-theme-v2
+          rsync -a ./ dist/ec-nordheide-theme-v2/ \
+            --exclude '.git/' \
+            --exclude '.github/' \
+            --exclude 'dist/' \
+            --exclude '.gitignore' \
+            --exclude '.gitattributes' \
+            --exclude 'README.md'
+          cd dist
+          zip -r ec-nordheide-theme-v2.zip ec-nordheide-theme-v2
+
+      - name: Publish GitHub release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ steps.version.outputs.version }}
+          name: v${{ steps.version.outputs.version }}
+          files: dist/ec-nordheide-theme-v2.zip
+          draft: false
+          prerelease: false
