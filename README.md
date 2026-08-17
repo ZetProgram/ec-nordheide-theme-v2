@@ -15,6 +15,7 @@ Das Theme übernimmt Präsentation, Layout und Designsystem. Inhalte und eigenst
 - Hexagon-Grundform
 - News-Loop aus WordPress-Beiträgen
 - responsive Navigation
+- eigenes Backend-Menü „EC Nordheide“ für Logo, Hero, CTA, Footer, Links und Farben
 
 ## Nächste Schritte
 

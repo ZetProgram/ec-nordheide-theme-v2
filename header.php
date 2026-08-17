@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) { exit; }
 	<header class="site-header">
 		<div class="site-header__inner">
 			<a class="site-brand" href="<?php echo esc_url( home_url( '/' ) ); ?>">
-				<span class="site-brand__mark" aria-hidden="true">€</span>
+				<?php $ec_options = ec_nordheide_v2_get_options(); if ( ! empty( $ec_options['logo_id'] ) ) : ?><img class="site-brand__image" src="<?php echo esc_url( wp_get_attachment_image_url( (int) $ec_options['logo_id'], 'medium' ) ); ?>" alt="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?>"><?php else : ?><span class="site-brand__mark" aria-hidden="true">€</span><?php endif; ?>
 				<span class="site-brand__text"><span>Entschieden für Christus</span><span>EC Nordheide</span></span>
 			</a>
 			<button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-navigation"><span class="screen-reader-text"><?php esc_html_e( 'Menü öffnen', 'ec-nordheide-v2' ); ?></span>☰</button>

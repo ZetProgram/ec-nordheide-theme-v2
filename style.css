@@ -3,7 +3,7 @@ Theme Name: EC Nordheide v2
 Theme URI: https://www.ec-nordheide.de
 Author: EC Nordheide
 Description: Neues, eigenständiges Theme für den EC Nordheide.
-Version: 0.1.0
+Version: 0.2.0
 Text Domain: ec-nordheide-v2
 */
 
@@ -53,6 +53,7 @@ img { max-width: 100%; height: auto; }
 .site-header__inner { display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; border-radius: 1rem; padding: .7rem 1rem .7rem 1.2rem; background: rgba(250, 252, 245, .96); box-shadow: var(--ec-shadow); }
 .site-brand { display: inline-flex; align-items: center; gap: .7rem; color: var(--ec-ink); font-weight: 800; line-height: 1.05; text-decoration: none; }
 .site-brand__mark { display: grid; width: 2.4rem; height: 2.4rem; place-items: center; border: 3px solid currentColor; border-radius: 50%; font-size: 1.25rem; }
+.site-brand__image { display: block; width: auto; max-width: 15rem; height: 2.8rem; object-fit: contain; }
 .site-brand__text { display: grid; font-size: .72rem; letter-spacing: .02em; text-transform: uppercase; }
 .site-brand__text span:last-child { font-weight: 400; }
 .site-nav ul { display: flex; align-items: center; gap: 1.25rem; margin: 0; padding: 0; list-style: none; }
