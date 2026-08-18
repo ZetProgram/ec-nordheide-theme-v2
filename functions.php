@@ -7,7 +7,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'EC_NORDHEIDE_V2_VERSION', '0.6.1' );
+define( 'EC_NORDHEIDE_V2_VERSION', '0.6.2' );
 
 // GitHub-basierte Theme-Updates. Das Repository wird als Release-Quelle verwendet.
 $ec_nordheide_update_checker = get_theme_file_path( 'lib/plugin-update-checker/plugin-update-checker.php' );
@@ -121,6 +121,13 @@ add_action(
 		register_block_style(
 			'core/group',
 			array(
+				'name'  => 'ec-card-grid',
+				'label' => __( 'EC Karten-Raster (gleich groß)', 'ec-nordheide-v2' ),
+			)
+		);
+		register_block_style(
+			'core/group',
+			array(
 				'name'  => 'ec-card-strip',
 				'label' => __( 'EC Karten-Streifen (scrollbar)', 'ec-nordheide-v2' ),
 			)
@@ -168,7 +175,7 @@ add_action(
 				'description' => __( 'Hero, Zielgruppen, Altersgruppen, Wer wir sind, Veranstaltungen, News-Platz, Team und Mitmachen - fertig zusammengesetzt, danach frei anpassbar.', 'ec-nordheide-v2' ),
 				'categories'  => array( 'ec-nordheide' ),
 				'content'     => <<<HTML
-<!-- wp:ec/hero {"kicker":"EC Nordheide","title":"Glaube, Gemeinschaft & Leben","subtitle":"entschieden für Christus","primaryLabel":"Finde deine Gruppe","primaryUrl":"{$home}/unsere-orte/","secondaryLabel":"Alle Veranstaltungen","secondaryUrl":"{$home}/veranstaltungen/"} /-->
+<!-- wp:ec/hero {"align":"full","kicker":"EC Nordheide","title":"Glaube, Gemeinschaft & Leben","subtitle":"entschieden für Christus","primaryLabel":"Finde deine Gruppe","primaryUrl":"{$home}/unsere-orte/","secondaryLabel":"Alle Veranstaltungen","secondaryUrl":"{$home}/veranstaltungen/"} /-->
 
 <!-- wp:group {"align":"full","className":"is-style-ec-paper","layout":{"type":"constrained"}} -->
 <div class="wp-block-group alignfull is-style-ec-paper">
@@ -184,8 +191,8 @@ add_action(
 <p class="ec-copy">Egal, ob du neu dabei bist, dein Kind begleiten möchtest oder selbst mitarbeiten willst: Hier findest du deinen nächsten Schritt.</p>
 <!-- /wp:paragraph -->
 
-<!-- wp:group {"className":"ec-audience-grid","layout":{"type":"constrained"}} -->
-<div class="wp-block-group ec-audience-grid">
+<!-- wp:group {"className":"is-style-ec-card-grid","layout":{"type":"constrained"}} -->
+<div class="wp-block-group is-style-ec-card-grid">
 <!-- wp:ec/card {"cardType":"audience","variant":"leaf","title":"Für Jugendliche","text":"Finde deine Gruppe, Menschen in deinem Alter und Angebote in deiner Nähe.","url":"{$home}/unsere-orte/","badge":"01"} /-->
 
 <!-- wp:ec/card {"cardType":"audience","variant":"paper","title":"Für Eltern","text":"Erfahre, wie wir junge Menschen begleiten, stärken und in ihrer Entwicklung fördern.","url":"{$home}/fuer-eltern/","badge":"02"} /-->
@@ -208,8 +215,8 @@ add_action(
 <p class="ec-copy">Bei uns findest du Gemeinschaft, in der du gesehen wirst, Fragen stellen kannst und deinen Glauben mitten im Leben entdeckst.</p>
 <!-- /wp:paragraph -->
 
-<!-- wp:group {"className":"ec-age-strip","layout":{"type":"constrained"}} -->
-<div class="wp-block-group ec-age-strip">
+<!-- wp:group {"className":"is-style-ec-card-strip","layout":{"type":"constrained"}} -->
+<div class="wp-block-group is-style-ec-card-strip">
 <!-- wp:ec/card {"cardType":"age","title":"Jungschar","text":"Abenteuer, Gemeinschaft und erste Schritte im Glauben.","ageRange":"8–12 Jahre","linkLabel":"Entdecken","url":"{$home}/jungschar/"} /-->
 
 <!-- wp:ec/card {"cardType":"age","title":"Teenkreis","text":"Echte Freundschaften, gute Fragen und gemeinsam unterwegs sein.","ageRange":"12–16 Jahre","linkLabel":"Entdecken","url":"{$home}/teenkreis/"} /-->
@@ -288,8 +295,8 @@ add_action(
 <p class="ec-copy">Der EC Nordheide lebt von Menschen, die Verantwortung übernehmen. Das ist eure erste Anlaufstelle für Fragen.</p>
 <!-- /wp:paragraph -->
 
-<!-- wp:group {"className":"ec-people-grid","layout":{"type":"constrained"}} -->
-<div class="wp-block-group ec-people-grid">
+<!-- wp:group {"className":"is-style-ec-card-grid","layout":{"type":"constrained"}} -->
+<div class="wp-block-group is-style-ec-card-grid">
 <!-- wp:ec/card {"cardType":"people","title":"Kreisleitung","text":"Der EC Nordheide als Ganzes: Ausrichtung, Vernetzung und Ansprechpartner für Gemeinden.","linkLabel":"Kontakt aufnehmen","url":"{$home}/ueber-uns/"} /-->
 
 <!-- wp:ec/card {"cardType":"people","title":"Jungschar-Team","text":"Zuständig für alle Jungschargruppen und Angebote für 8- bis 12-Jährige.","linkLabel":"Kontakt aufnehmen","url":"{$home}/ueber-uns/"} /-->

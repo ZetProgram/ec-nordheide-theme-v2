@@ -2,7 +2,7 @@
 Theme Name: EC Nordheide v2
 Theme URI: https://www.ec-nordheide.de
 Description: Template für den EC Nordheide
-Version: 0.6.1
+Version: 0.6.2
 GitHub Theme URI: https://github.com/ZetProgram/ec-nordheide-theme-v2
 Primary Branch: production
 Author: Fabian Bross
@@ -638,6 +638,15 @@ button { font-family: var(--ec-font); }
 .wp-block-group.is-style-ec-dark p, .wp-block-group.is-style-ec-accent p { color: rgba(244, 249, 238, .84); }
 .wp-block-group.is-style-ec-dark .is-style-ec-kicker, .wp-block-group.is-style-ec-accent .is-style-ec-kicker { color: var(--ec-leaf); }
 .wp-block-group.is-style-ec-dark a:not(.wp-block-button__link), .wp-block-group.is-style-ec-accent a:not(.wp-block-button__link) { color: var(--ec-leaf); }
+
+/* Alle direkten Kinder (z. B. mehrere "EC Karte"-Bloecke) werden gleich
+   breit und gleich hoch - CSS Grid dehnt sie per Voreinstellung. */
+.wp-block-group.is-style-ec-card-grid {
+	display: grid;
+	grid-template-columns: repeat( auto-fit, minmax( 220px, 1fr ) );
+	gap: 1.1rem;
+	align-items: stretch;
+}
 
 .wp-block-group.is-style-ec-card-strip {
 	display: flex;
