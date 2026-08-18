@@ -2,7 +2,7 @@
 Theme Name: EC Nordheide v2
 Theme URI: https://www.ec-nordheide.de
 Description: Template für den EC Nordheide
-Version: 0.5.0
+Version: 0.6.0
 GitHub Theme URI: https://github.com/ZetProgram/ec-nordheide-theme-v2
 Primary Branch: production
 Author: Fabian Bross
@@ -113,7 +113,6 @@ body {
 	line-height: 1.6;
 	-webkit-font-smoothing: antialiased;
 	-webkit-tap-highlight-color: transparent;
-	overflow-x: hidden;
 }
 a, button { touch-action: manipulation; }
 a { color: inherit; }
@@ -552,11 +551,23 @@ button { font-family: var(--ec-font); }
 /* ---------------------------------------------------------------
    Seiten- / Beitrags-Templates
 --------------------------------------------------------------- */
-.ec-page__container { max-width: 62rem; padding-top: 5rem; }
+.ec-page__container { max-width: 62rem; padding: 6rem 0 clamp(3rem, 6vw, 5rem); }
+/* Startseite: Hero-Block soll bündig am oberen Rand beginnen, seine
+   eigene Innen-Abstand sorgt bereits für Abstand zum schwebenden Header. */
+.ec-page__container--flush { padding-top: 0; }
 .ec-page__article { max-width: 58rem; }
 .ec-page__image { margin: 2rem 0; overflow: hidden; border-radius: var(--ec-radius-lg); }
 .ec-page__content { margin-top: 2rem; color: var(--ec-ink-soft); font-size: 1.08rem; line-height: 1.7; }
-.ec-page__content > * { max-width: 100%; }
+/* Normale Blöcke bleiben lesbar schmal; Blöcke mit "Breite"/"Volle Breite"
+   (Gruppe/Hero/Spalten) dürfen aus dem schmalen Artikel-Rahmen ausbrechen. */
+.ec-page__content > :where(:not(.alignwide):not(.alignfull)) { max-width: 100%; }
+.ec-page__content > .alignwide { max-width: var(--ec-content); width: 100%; }
+.ec-page__content > .alignfull {
+	width: 100vw;
+	max-width: 100vw;
+	margin-left: calc(50% - 50vw);
+	margin-right: calc(50% - 50vw);
+}
 .ec-page__content h2, .ec-page__content h3 { margin-top: 2.2rem; color: var(--ec-ink); line-height: 1.2; scroll-margin-top: 6rem; }
 .ec-page__content a { color: var(--ec-accent); font-weight: 700; }
 .ec-page__content img { border-radius: var(--ec-radius-md); }
@@ -605,6 +616,63 @@ button { font-family: var(--ec-font); }
 	margin-top: 3.5rem; padding-top: 1.5rem; border-top: 1px solid var(--ec-line);
 	color: var(--ec-ink-soft); font-size: .85rem;
 }
+
+/* ---------------------------------------------------------------
+   Block-Editor: Formatvorlagen für Gruppe/Spalten/Absatz/Button
+   (Seiten -> Editor -> Block -> Stile). Ein Klick reicht, kein
+   eigener Block nötig. Volle Breite über die normale
+   Block-Symbolleiste ("Breite" -> "Full") einstellen.
+--------------------------------------------------------------- */
+.wp-block-group.is-style-ec-paper,
+.wp-block-group.is-style-ec-dark,
+.wp-block-group.is-style-ec-accent {
+	padding: clamp(3.5rem, 8vw, 7rem) clamp(1.25rem, 4vw, 3rem);
+}
+.wp-block-group.is-style-ec-paper { background: var(--ec-paper); color: var(--ec-ink); }
+.wp-block-group.is-style-ec-dark { background: var(--ec-ink); color: var(--ec-paper); }
+.wp-block-group.is-style-ec-accent { background: var(--ec-accent); color: var(--ec-paper); }
+.wp-block-group.is-style-ec-dark h1, .wp-block-group.is-style-ec-dark h2, .wp-block-group.is-style-ec-dark h3,
+.wp-block-group.is-style-ec-accent h1, .wp-block-group.is-style-ec-accent h2, .wp-block-group.is-style-ec-accent h3 {
+	color: var(--ec-paper);
+}
+.wp-block-group.is-style-ec-dark p, .wp-block-group.is-style-ec-accent p { color: rgba(244, 249, 238, .84); }
+.wp-block-group.is-style-ec-dark .is-style-ec-kicker, .wp-block-group.is-style-ec-accent .is-style-ec-kicker { color: var(--ec-leaf); }
+.wp-block-group.is-style-ec-dark a:not(.wp-block-button__link), .wp-block-group.is-style-ec-accent a:not(.wp-block-button__link) { color: var(--ec-leaf); }
+
+.wp-block-group.is-style-ec-card-strip {
+	display: flex;
+	gap: 1rem;
+	overflow-x: auto;
+	scroll-snap-type: x proximity;
+	padding-bottom: .5rem;
+}
+.wp-block-group.is-style-ec-card-strip > * { flex: 0 0 min(78%, 19rem); scroll-snap-align: start; }
+
+.wp-block-columns.is-style-ec-split { gap: clamp(2.5rem, 6vw, 6rem); align-items: center; }
+.wp-block-columns.is-style-ec-split img { border-radius: var(--ec-radius-lg); aspect-ratio: 4 / 5; object-fit: cover; width: 100%; }
+
+.wp-block-paragraph.is-style-ec-kicker,
+p.is-style-ec-kicker {
+	color: var(--ec-accent);
+	font-size: .8rem;
+	font-weight: 700;
+	letter-spacing: .14em;
+	text-transform: uppercase;
+}
+
+.wp-block-button__link,
+.wp-block-button.is-style-ec-ghost .wp-block-button__link {
+	border-radius: var(--ec-radius-md);
+	font-weight: 700;
+	transition: background-color .2s var(--ec-ease), color .2s var(--ec-ease), transform .2s var(--ec-ease);
+}
+.wp-block-button__link:hover, .wp-block-button__link:focus-visible { transform: translateY(-2px); }
+.wp-block-button.is-style-ec-ghost .wp-block-button__link {
+	background: transparent !important;
+	border: 1px solid rgba(244, 249, 238, .55);
+	color: inherit !important;
+}
+.wp-block-button.is-style-ec-ghost .wp-block-button__link:hover { background: rgba(244, 249, 238, .14) !important; }
 
 /* ---------------------------------------------------------------
    Responsive

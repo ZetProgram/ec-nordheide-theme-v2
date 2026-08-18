@@ -1,0 +1,28 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "ec/card",
+	"title": "EC Karte",
+	"category": "ec-nordheide",
+	"icon": "id-alt",
+	"description": "Eine Karte für Zielgruppen, Altersgruppen oder Team - Titel, Text, Link.",
+	"keywords": [ "karte", "card", "zielgruppe", "altersgruppe", "team" ],
+	"supports": {
+		"html": false
+	},
+	"attributes": {
+		"cardType": { "type": "string", "default": "audience" },
+		"variant": { "type": "string", "default": "leaf" },
+		"title": { "type": "string", "default": "Titel" },
+		"text": { "type": "string", "default": "" },
+		"ageRange": { "type": "string", "default": "" },
+		"linkLabel": { "type": "string", "default": "Mehr erfahren" },
+		"url": { "type": "string", "default": "" },
+		"imageId": { "type": "number", "default": 0 },
+		"imageUrl": { "type": "string", "default": "" },
+		"badge": { "type": "string", "default": "" }
+	},
+	"textdomain": "ec-nordheide-v2",
+	"editorScript": "ec-nordheide-v2-blocks-editor",
+	"render": "file:./render.php"
+}

@@ -8,22 +8,20 @@ Das Theme übernimmt Präsentation, Layout und Designsystem. Inhalte und eigenst
 
 ## Aktueller Stand
 
-- schwebende Header-Navigation
-- Hero-Bereich mit konfigurierbarem Hintergrundbild-Token
-- Off-White-/Dark-Sektionen
-- orange CTA-Komponenten
-- Hexagon-Grundform
-- News-Loop aus WordPress-Beiträgen
-- responsive Navigation
-- eigenes Backend-Menü „EC Nordheide“ für Logo, Hero, CTA, Footer, Links und Farben
-- mitgeliefertes Hero-Foto sowie schwarze und weiße EC-Logo-Variante
+- schwebende Header-Navigation, selbst gehostetes Montserrat, WCAG-AA-Kontrast
+- Startseite wird als ganz normale WordPress-Seite mit Blöcken gebaut, kein Extra-Einstellungsformular dafür
+- zwei eigene Blöcke: **EC Hero** (Titel, Buttons, Bild oder Marken-Platzhalter) und **EC Karte** (Zielgruppe/Altersgruppe/Team in einem Block)
+- fertiges Muster „EC Nordheide: Startseite“ zum Einfügen (Seiten → Neu → Muster einfügen)
+- Formatvorlagen für Gruppe/Spalten/Absatz/Button (EC Papier/Dunkel/Akzent, EC Kicker, EC Karten-Streifen, EC Bild-Text-Split, EC Ghost-Button)
+- News-Loop aus WordPress-Beiträgen, responsive Navigation
+- kleines Backend-Menü „EC Nordheide“ nur noch für site-weite Dinge: Logo, Footer/Links, Farben
 
 ## Nächste Schritte
 
-1. echtes EC-Logo im Header verwenden
-2. Hero-Bild und Startseiteninhalte aus WordPress konfigurierbar machen
+1. Seite „Startseite“ anlegen, Muster „EC Nordheide: Startseite“ einfügen, Inhalte anpassen
+2. unter Einstellungen → Lesen die neue Seite als statische Startseite einstellen
 3. bestehende Menüs, Mitarbeiter, Slider und Gebetswand anbinden
-4. Templates für Seiten, Orte, Veranstaltungen und Beiträge ergänzen
+4. Templates für Orte und Veranstaltungen ergänzen (aktuell Platzhalter im Muster)
 5. auf `www.test.ec-nordheide.de` aktivieren und visuell verfeinern
 
 ## GitHub-Workflow
