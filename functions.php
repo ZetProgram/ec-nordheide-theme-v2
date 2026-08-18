@@ -7,7 +7,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'EC_NORDHEIDE_V2_VERSION', '0.6.0' );
+define( 'EC_NORDHEIDE_V2_VERSION', '0.6.1' );
 
 // GitHub-basierte Theme-Updates. Das Repository wird als Release-Quelle verwendet.
 $ec_nordheide_update_checker = get_theme_file_path( 'lib/plugin-update-checker/plugin-update-checker.php' );
@@ -61,7 +61,7 @@ add_action(
 		wp_register_script(
 			'ec-nordheide-v2-blocks-editor',
 			get_theme_file_uri( 'assets/js/blocks-editor.js' ),
-			array( 'wp-blocks', 'wp-element', 'wp-block-editor', 'wp-components', 'wp-server-side-render', 'wp-i18n' ),
+			array( 'wp-blocks', 'wp-element', 'wp-block-editor', 'wp-components', 'wp-i18n' ),
 			EC_NORDHEIDE_V2_VERSION,
 			true
 		);
