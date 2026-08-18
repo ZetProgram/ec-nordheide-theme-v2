@@ -7,7 +7,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'EC_NORDHEIDE_V2_VERSION', '0.5.0' );
+define( 'EC_NORDHEIDE_V2_VERSION', '0.6.0' );
 
 // GitHub-basierte Theme-Updates. Das Repository wird als Release-Quelle verwendet.
 $ec_nordheide_update_checker = get_theme_file_path( 'lib/plugin-update-checker/plugin-update-checker.php' );
@@ -34,10 +34,294 @@ add_action(
 		add_theme_support( 'post-thumbnails' );
 		add_theme_support( 'html5', array( 'search-form', 'comment-form', 'comment-list', 'gallery', 'caption', 'style', 'script' ) );
 		add_theme_support( 'custom-logo', array( 'height' => 80, 'width' => 240, 'flex-height' => true, 'flex-width' => true ) );
+		// Damit der Hero-Block und Bereiche mit Hintergrundfarbe im
+		// Block-Editor auf volle Breite gestellt werden können.
+		add_theme_support( 'align-wide' );
+		// Das Theme-Stylesheet auch im Block-Editor laden, damit Vorschau
+		// und Frontend gleich aussehen (Schrift, Farben, Karten).
+		add_theme_support( 'editor-styles' );
+		add_editor_style( 'style.css' );
 
 		register_nav_menus(
 			array(
 				'primary' => __( 'Hauptmenü', 'ec-nordheide-v2' ),
+			)
+		);
+	}
+);
+
+/**
+ * EC-Blöcke: Hero und Karte.
+ * Beide werden serverseitig gerendert (PHP), damit Editor-Vorschau
+ * (per ServerSideRender) und Frontend garantiert gleich aussehen.
+ */
+add_action(
+	'init',
+	function () {
+		wp_register_script(
+			'ec-nordheide-v2-blocks-editor',
+			get_theme_file_uri( 'assets/js/blocks-editor.js' ),
+			array( 'wp-blocks', 'wp-element', 'wp-block-editor', 'wp-components', 'wp-server-side-render', 'wp-i18n' ),
+			EC_NORDHEIDE_V2_VERSION,
+			true
+		);
+		wp_set_script_translations( 'ec-nordheide-v2-blocks-editor', 'ec-nordheide-v2' );
+
+		register_block_type( get_theme_file_path( 'blocks/hero' ) );
+		register_block_type( get_theme_file_path( 'blocks/card' ) );
+	}
+);
+
+add_filter(
+	'block_categories_all',
+	function ( $categories ) {
+		return array_merge(
+			array(
+				array(
+					'slug'  => 'ec-nordheide',
+					'title' => __( 'EC Nordheide', 'ec-nordheide-v2' ),
+					'icon'  => null,
+				),
+			),
+			$categories
+		);
+	}
+);
+
+/**
+ * Fertige Formatvorlagen für Standard-Blöcke, damit Bereiche, Karten-Reihen
+ * und Buttons mit dem EC-Design gebaut werden können, ohne eigene Blöcke
+ * dafür zu brauchen. Erscheinen im Editor als Stil-Auswahl am jeweiligen
+ * Block (Seitenleiste -> Stile). Die passenden CSS-Regeln stehen in style.css.
+ */
+add_action(
+	'init',
+	function () {
+		register_block_style(
+			'core/group',
+			array(
+				'name'  => 'ec-paper',
+				'label' => __( 'EC Papier', 'ec-nordheide-v2' ),
+			)
+		);
+		register_block_style(
+			'core/group',
+			array(
+				'name'  => 'ec-dark',
+				'label' => __( 'EC Dunkel', 'ec-nordheide-v2' ),
+			)
+		);
+		register_block_style(
+			'core/group',
+			array(
+				'name'  => 'ec-accent',
+				'label' => __( 'EC Akzent', 'ec-nordheide-v2' ),
+			)
+		);
+		register_block_style(
+			'core/group',
+			array(
+				'name'  => 'ec-card-strip',
+				'label' => __( 'EC Karten-Streifen (scrollbar)', 'ec-nordheide-v2' ),
+			)
+		);
+		register_block_style(
+			'core/columns',
+			array(
+				'name'  => 'ec-split',
+				'label' => __( 'EC Bild-Text-Split', 'ec-nordheide-v2' ),
+			)
+		);
+		register_block_style(
+			'core/paragraph',
+			array(
+				'name'  => 'ec-kicker',
+				'label' => __( 'EC Kicker', 'ec-nordheide-v2' ),
+			)
+		);
+		register_block_style(
+			'core/button',
+			array(
+				'name'  => 'ec-ghost',
+				'label' => __( 'EC Ghost (transparent)', 'ec-nordheide-v2' ),
+			)
+		);
+	}
+);
+
+/**
+ * Fertige Startseite zum Einfügen: Seiten -> Neu -> Muster einfügen
+ * -> "EC Nordheide: Startseite". Danach ganz normal im Editor anpassen.
+ * Für "Neues aus der Nordheide" bitte zusätzlich einen normalen
+ * Abfrage-Loop-Block einfügen (WordPress bringt dafür eigene,
+ * geprüfte Muster mit) - das hier nachzubauen wäre fehleranfälliger
+ * als das eingebaute WordPress-Muster zu verwenden.
+ */
+add_action(
+	'init',
+	function () {
+		$home = home_url();
+		register_block_pattern(
+			'ec-nordheide-v2/startseite',
+			array(
+				'title'       => __( 'EC Nordheide: Startseite', 'ec-nordheide-v2' ),
+				'description' => __( 'Hero, Zielgruppen, Altersgruppen, Wer wir sind, Veranstaltungen, News-Platz, Team und Mitmachen - fertig zusammengesetzt, danach frei anpassbar.', 'ec-nordheide-v2' ),
+				'categories'  => array( 'ec-nordheide' ),
+				'content'     => <<<HTML
+<!-- wp:ec/hero {"kicker":"EC Nordheide","title":"Glaube, Gemeinschaft & Leben","subtitle":"entschieden für Christus","primaryLabel":"Finde deine Gruppe","primaryUrl":"{$home}/unsere-orte/","secondaryLabel":"Alle Veranstaltungen","secondaryUrl":"{$home}/veranstaltungen/"} /-->
+
+<!-- wp:group {"align":"full","className":"is-style-ec-paper","layout":{"type":"constrained"}} -->
+<div class="wp-block-group alignfull is-style-ec-paper">
+<!-- wp:paragraph {"className":"is-style-ec-kicker"} -->
+<p class="is-style-ec-kicker">Dein Einstieg</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"className":"ec-heading"} -->
+<h2 class="wp-block-heading ec-heading">Was suchst du?</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph {"className":"ec-copy"} -->
+<p class="ec-copy">Egal, ob du neu dabei bist, dein Kind begleiten möchtest oder selbst mitarbeiten willst: Hier findest du deinen nächsten Schritt.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:group {"className":"ec-audience-grid","layout":{"type":"constrained"}} -->
+<div class="wp-block-group ec-audience-grid">
+<!-- wp:ec/card {"cardType":"audience","variant":"leaf","title":"Für Jugendliche","text":"Finde deine Gruppe, Menschen in deinem Alter und Angebote in deiner Nähe.","url":"{$home}/unsere-orte/","badge":"01"} /-->
+
+<!-- wp:ec/card {"cardType":"audience","variant":"paper","title":"Für Eltern","text":"Erfahre, wie wir junge Menschen begleiten, stärken und in ihrer Entwicklung fördern.","url":"{$home}/fuer-eltern/","badge":"02"} /-->
+
+<!-- wp:ec/card {"cardType":"audience","variant":"soft","title":"Für Mitarbeitende","text":"Du möchtest dich einbringen? Entdecke Möglichkeiten, Teil der Bewegung zu werden.","url":"{$home}/mitarbeit/","badge":"03"} /-->
+
+<!-- wp:ec/card {"cardType":"audience","variant":"dark","title":"Über den EC","text":"Lerne unsere Geschichte, unsere Werte und die Menschen hinter dem EC Nordheide kennen.","url":"{$home}/ueber-uns/","badge":"04"} /-->
+</div>
+<!-- /wp:group -->
+</div>
+<!-- /wp:group -->
+
+<!-- wp:group {"align":"full","className":"is-style-ec-accent","layout":{"type":"constrained"}} -->
+<div class="wp-block-group alignfull is-style-ec-accent">
+<!-- wp:heading {"className":"ec-heading"} -->
+<h2 class="wp-block-heading ec-heading">Deine Gruppe. Dein Ort. Deine Menschen.</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph {"className":"ec-copy"} -->
+<p class="ec-copy">Bei uns findest du Gemeinschaft, in der du gesehen wirst, Fragen stellen kannst und deinen Glauben mitten im Leben entdeckst.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:group {"className":"ec-age-strip","layout":{"type":"constrained"}} -->
+<div class="wp-block-group ec-age-strip">
+<!-- wp:ec/card {"cardType":"age","title":"Jungschar","text":"Abenteuer, Gemeinschaft und erste Schritte im Glauben.","ageRange":"8–12 Jahre","linkLabel":"Entdecken","url":"{$home}/jungschar/"} /-->
+
+<!-- wp:ec/card {"cardType":"age","title":"Teenkreis","text":"Echte Freundschaften, gute Fragen und gemeinsam unterwegs sein.","ageRange":"12–16 Jahre","linkLabel":"Entdecken","url":"{$home}/teenkreis/"} /-->
+
+<!-- wp:ec/card {"cardType":"age","title":"Jugendkreis","text":"Glaube, Leben und Verantwortung mit anderen Jugendlichen teilen.","ageRange":"16–18 Jahre","linkLabel":"Entdecken","url":"{$home}/jugendkreis/"} /-->
+
+<!-- wp:ec/card {"cardType":"age","title":"Junge Erwachsene","text":"Gemeinschaft, Tiefgang und Raum für deinen nächsten Schritt.","ageRange":"18+ Jahre","linkLabel":"Entdecken","url":"{$home}/junge-erwachsene/"} /-->
+</div>
+<!-- /wp:group -->
+</div>
+<!-- /wp:group -->
+
+<!-- wp:group {"align":"full","className":"is-style-ec-paper","layout":{"type":"constrained"}} -->
+<div class="wp-block-group alignfull is-style-ec-paper">
+<!-- wp:heading {"className":"ec-heading"} -->
+<h2 class="wp-block-heading ec-heading">Wer wir sind</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph {"className":"ec-copy"} -->
+<p class="ec-copy">Wir sind der EC Nordheide: junge Menschen, engagierte Mitarbeitende und Gemeinden, die gemeinsam unterwegs sind. Wir glauben, dass jeder Mensch wertvoll ist, dass Jesus Christus Leben verändert und dass Gemeinschaft stark macht.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:buttons -->
+<div class="wp-block-buttons">
+<!-- wp:button -->
+<div class="wp-block-button"><a class="wp-block-button__link wp-element-button" href="{$home}/ueber-uns/">Mehr über uns</a></div>
+<!-- /wp:button -->
+</div>
+<!-- /wp:buttons -->
+</div>
+<!-- /wp:group -->
+
+<!-- wp:group {"align":"full","className":"is-style-ec-dark","layout":{"type":"constrained"}} -->
+<div class="wp-block-group alignfull is-style-ec-dark">
+<!-- wp:heading {"className":"ec-heading"} -->
+<h2 class="wp-block-heading ec-heading">Kommende Veranstaltungen</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph {"className":"ec-copy"} -->
+<p class="ec-copy">Freizeiten, Aktionen und Treffen, bei denen du dabei sein kannst.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:buttons -->
+<div class="wp-block-buttons">
+<!-- wp:button -->
+<div class="wp-block-button"><a class="wp-block-button__link wp-element-button" href="{$home}/veranstaltungen/">Alle Veranstaltungen</a></div>
+<!-- /wp:button -->
+</div>
+<!-- /wp:buttons -->
+</div>
+<!-- /wp:group -->
+
+<!-- wp:group {"align":"full","className":"is-style-ec-paper","layout":{"type":"constrained"}} -->
+<div class="wp-block-group alignfull is-style-ec-paper">
+<!-- wp:heading {"className":"ec-heading"} -->
+<h2 class="wp-block-heading ec-heading">Neues aus der Nordheide</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph {"className":"ec-copy"} -->
+<p class="ec-copy">Geschichten, Einblicke und aktuelle Neuigkeiten aus unserem Kreisverband.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph {"style":{"typography":{"fontStyle":"italic"}}} -->
+<p style="font-style:italic">Tipp: Füge hier über das Block-Menü (+) einen "Abfrage-Loop"-Block ein und stelle ihn auf 3 Beiträge, um eure neuesten Artikel automatisch zu zeigen.</p>
+<!-- /wp:paragraph -->
+</div>
+<!-- /wp:group -->
+
+<!-- wp:group {"align":"full","className":"is-style-ec-paper","layout":{"type":"constrained"}} -->
+<div class="wp-block-group alignfull is-style-ec-paper">
+<!-- wp:heading {"className":"ec-heading"} -->
+<h2 class="wp-block-heading ec-heading">Wer sich um was kümmert</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph {"className":"ec-copy"} -->
+<p class="ec-copy">Der EC Nordheide lebt von Menschen, die Verantwortung übernehmen. Das ist eure erste Anlaufstelle für Fragen.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:group {"className":"ec-people-grid","layout":{"type":"constrained"}} -->
+<div class="wp-block-group ec-people-grid">
+<!-- wp:ec/card {"cardType":"people","title":"Kreisleitung","text":"Der EC Nordheide als Ganzes: Ausrichtung, Vernetzung und Ansprechpartner für Gemeinden.","linkLabel":"Kontakt aufnehmen","url":"{$home}/ueber-uns/"} /-->
+
+<!-- wp:ec/card {"cardType":"people","title":"Jungschar-Team","text":"Zuständig für alle Jungschargruppen und Angebote für 8- bis 12-Jährige.","linkLabel":"Kontakt aufnehmen","url":"{$home}/ueber-uns/"} /-->
+
+<!-- wp:ec/card {"cardType":"people","title":"Teen- & Jugendkreis","text":"Begleitet Teenkreis und Jugendkreis durch Alltag, Freizeiten und Glaubensfragen.","linkLabel":"Kontakt aufnehmen","url":"{$home}/ueber-uns/"} /-->
+
+<!-- wp:ec/card {"cardType":"people","title":"Mitarbeit & Freiwillige","text":"Erster Kontakt, wenn du selbst mitarbeiten oder ein Team unterstützen willst.","linkLabel":"Kontakt aufnehmen","url":"{$home}/mitarbeit/"} /-->
+</div>
+<!-- /wp:group -->
+</div>
+<!-- /wp:group -->
+
+<!-- wp:group {"align":"full","className":"is-style-ec-accent","layout":{"type":"constrained"}} -->
+<div class="wp-block-group alignfull is-style-ec-accent">
+<!-- wp:heading {"textAlign":"center","className":"ec-heading"} -->
+<h2 class="wp-block-heading ec-heading has-text-align-center">Du kannst einen Unterschied machen.</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph {"align":"center","className":"ec-copy"} -->
+<p class="ec-copy has-text-align-center">Ob durch deine Zeit, dein Gebet oder deine Unterstützung: Danke, dass du Teil unserer Bewegung bist.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:buttons {"layout":{"type":"flex","justifyContent":"center"}} -->
+<div class="wp-block-buttons">
+<!-- wp:button {"className":"is-style-ec-ghost"} -->
+<div class="wp-block-button is-style-ec-ghost"><a class="wp-block-button__link wp-element-button" href="{$home}/spenden/">Unterstütze uns</a></div>
+<!-- /wp:button -->
+</div>
+<!-- /wp:buttons -->
+</div>
+<!-- /wp:group -->
+HTML,
 			)
 		);
 	}
@@ -116,25 +400,6 @@ function ec_nordheide_v2_fallback_menu() {
 	echo '</ul>';
 }
 
-/**
- * Liefert die Hero-Bild-URL oder einen leeren String.
- *
- * Ohne echtes Foto zeigt der Hero einen Marken-Platzhalter (Farbverlauf +
- * Hexagon-Motiv, siehe .ec-hero--placeholder) statt eines generischen
- * Stockfotos. Sobald unter „EC Nordheide" ein eigenes Foto hochgeladen wird,
- * ersetzt es automatisch den Platzhalter.
- */
-function ec_nordheide_v2_hero_image() {
-	$options = ec_nordheide_v2_get_options();
-	if ( ! empty( $options['hero_image_id'] ) ) {
-		$url = wp_get_attachment_image_url( (int) $options['hero_image_id'], 'full' );
-		if ( $url ) {
-			return esc_url( $url );
-		}
-	}
-	return '';
-}
-
 function ec_nordheide_v2_logo_url() {
 	$options = ec_nordheide_v2_get_options();
 	if ( ! empty( $options['logo_id'] ) ) {
@@ -144,87 +409,18 @@ function ec_nordheide_v2_logo_url() {
 }
 
 /**
- * Ein Eintrag pro pflegbarem Feld: type steuert sowohl das Admin-Formular
- * als auch die Sanitisierung. So bleibt jedes neue Startseiten-Feld an
- * genau einer Stelle definiert, statt an drei Stellen synchron gehalten
- * werden zu müssen.
+ * Nur noch site-weite Einstellungen (Logo, Farben, Footer). Die Startseite
+ * selbst wird als WordPress-Seite mit den EC-Blöcken gebaut (Seiten -> Neu
+ * -> Muster "EC Nordheide: Startseite"), nicht mehr hier.
  *
+ * Ein Eintrag pro pflegbarem Feld: type steuert sowohl das Admin-Formular
+ * als auch die Sanitisierung.
  * Typen: text, textarea, url, color, media
  */
 function ec_nordheide_v2_field_schema() {
-	// Interne Standard-Links relativ zu home_url(), damit sie auch bei
-	// einer WordPress-Installation in einem Unterverzeichnis stimmen.
-	$u = function ( $path ) {
-		return home_url( $path );
-	};
-
-	$audiences_default = array(
-		array( 'title' => 'Für Jugendliche', 'text' => 'Finde deine Gruppe, Menschen in deinem Alter und Angebote in deiner Nähe.', 'url' => $u( '/unsere-orte/' ) ),
-		array( 'title' => 'Für Eltern', 'text' => 'Erfahre, wie wir junge Menschen begleiten, stärken und in ihrer Entwicklung fördern.', 'url' => $u( '/fuer-eltern/' ) ),
-		array( 'title' => 'Für Mitarbeitende', 'text' => 'Du möchtest dich einbringen? Entdecke Möglichkeiten, Teil der Bewegung zu werden.', 'url' => $u( '/mitarbeit/' ) ),
-		array( 'title' => 'Über den EC', 'text' => 'Lerne unsere Geschichte, unsere Werte und die Menschen hinter dem EC Nordheide kennen.', 'url' => $u( '/ueber-uns/' ) ),
-	);
-	$age_groups_default = array(
-		array( 'title' => 'Jungschar', 'range' => '8–12 Jahre', 'text' => 'Abenteuer, Gemeinschaft und erste Schritte im Glauben.', 'url' => $u( '/jungschar/' ) ),
-		array( 'title' => 'Teenkreis', 'range' => '12–16 Jahre', 'text' => 'Echte Freundschaften, gute Fragen und gemeinsam unterwegs sein.', 'url' => $u( '/teenkreis/' ) ),
-		array( 'title' => 'Jugendkreis', 'range' => '16–18 Jahre', 'text' => 'Glaube, Leben und Verantwortung mit anderen Jugendlichen teilen.', 'url' => $u( '/jugendkreis/' ) ),
-		array( 'title' => 'Junge Erwachsene', 'range' => '18+ Jahre', 'text' => 'Gemeinschaft, Tiefgang und Raum für deinen nächsten Schritt.', 'url' => $u( '/junge-erwachsene/' ) ),
-	);
-	$people_default = array(
-		array( 'title' => 'Kreisleitung', 'text' => 'Der EC Nordheide als Ganzes: Ausrichtung, Vernetzung und Ansprechpartner für Gemeinden.', 'url' => $u( '/ueber-uns/' ) ),
-		array( 'title' => 'Jungschar-Team', 'text' => 'Zuständig für alle Jungschargruppen und Angebote für 8- bis 12-Jährige.', 'url' => $u( '/ueber-uns/' ) ),
-		array( 'title' => 'Teen- & Jugendkreis', 'text' => 'Begleitet Teenkreis und Jugendkreis durch Alltag, Freizeiten und Glaubensfragen.', 'url' => $u( '/ueber-uns/' ) ),
-		array( 'title' => 'Mitarbeit & Freiwillige', 'text' => 'Erster Kontakt, wenn du selbst mitarbeiten oder ein Team unterstützen willst.', 'url' => $u( '/mitarbeit/' ) ),
-	);
-
-	$schema = array(
+	return array(
 		// Branding
-		'logo_id'       => array( 'type' => 'media', 'group' => 'branding', 'label' => __( 'Logo', 'ec-nordheide-v2' ), 'default' => 0 ),
-		'hero_image_id' => array( 'type' => 'media', 'group' => 'branding', 'label' => __( 'Hero-Hintergrundbild', 'ec-nordheide-v2' ), 'default' => 0 ),
-		'hero_kicker'   => array( 'type' => 'text', 'group' => 'branding', 'label' => __( 'Hero-Kicker', 'ec-nordheide-v2' ), 'default' => 'EC Nordheide' ),
-		'hero_title'    => array( 'type' => 'text', 'group' => 'branding', 'label' => __( 'Hero-Titel', 'ec-nordheide-v2' ), 'default' => 'Glaube, Gemeinschaft & Leben' ),
-		'hero_subtitle' => array( 'type' => 'text', 'group' => 'branding', 'label' => __( 'Hero-Unterzeile', 'ec-nordheide-v2' ), 'default' => 'entschieden für Christus' ),
-		'hero_primary_label'   => array( 'type' => 'text', 'group' => 'branding', 'label' => __( 'Hero-Button 1: Beschriftung', 'ec-nordheide-v2' ), 'default' => 'Finde deine Gruppe' ),
-		'hero_primary_url'     => array( 'type' => 'url', 'group' => 'branding', 'label' => __( 'Hero-Button 1: Link', 'ec-nordheide-v2' ), 'default' => $u( '/unsere-orte/' ) ),
-		'hero_secondary_label' => array( 'type' => 'text', 'group' => 'branding', 'label' => __( 'Hero-Button 2: Beschriftung', 'ec-nordheide-v2' ), 'default' => 'Alle Veranstaltungen' ),
-		'hero_secondary_url'   => array( 'type' => 'url', 'group' => 'branding', 'label' => __( 'Hero-Button 2: Link', 'ec-nordheide-v2' ), 'default' => $u( '/veranstaltungen/' ) ),
-
-		// Startseite: Was suchst du?
-		'search_kicker' => array( 'type' => 'text', 'group' => 'search', 'label' => __( 'Kicker', 'ec-nordheide-v2' ), 'default' => 'Dein Einstieg' ),
-		'search_heading' => array( 'type' => 'text', 'group' => 'search', 'label' => __( 'Überschrift', 'ec-nordheide-v2' ), 'default' => 'Was suchst du?' ),
-		'search_copy'   => array( 'type' => 'textarea', 'group' => 'search', 'label' => __( 'Text', 'ec-nordheide-v2' ), 'default' => 'Egal, ob du neu dabei bist, dein Kind begleiten möchtest oder selbst mitarbeiten willst: Hier findest du deinen nächsten Schritt.' ),
-
-		// Startseite: Altersgruppen
-		'age_heading' => array( 'type' => 'text', 'group' => 'age', 'label' => __( 'Überschrift', 'ec-nordheide-v2' ), 'default' => 'Deine Gruppe. Dein Ort. Deine Menschen.' ),
-		'age_copy'    => array( 'type' => 'textarea', 'group' => 'age', 'label' => __( 'Text', 'ec-nordheide-v2' ), 'default' => 'Bei uns findest du Gemeinschaft, in der du gesehen wirst, Fragen stellen kannst und deinen Glauben mitten im Leben entdeckst.' ),
-
-		// Startseite: Wer wir sind
-		'about_image_id' => array( 'type' => 'media', 'group' => 'about', 'label' => __( 'Bild', 'ec-nordheide-v2' ), 'default' => 0 ),
-		'about_heading'   => array( 'type' => 'text', 'group' => 'about', 'label' => __( 'Überschrift', 'ec-nordheide-v2' ), 'default' => 'Wer wir sind' ),
-		'about_text_1'    => array( 'type' => 'textarea', 'group' => 'about', 'label' => __( 'Absatz 1', 'ec-nordheide-v2' ), 'default' => 'Wir sind der EC Nordheide: junge Menschen, engagierte Mitarbeitende und Gemeinden, die gemeinsam unterwegs sind.' ),
-		'about_text_2'    => array( 'type' => 'textarea', 'group' => 'about', 'label' => __( 'Absatz 2', 'ec-nordheide-v2' ), 'default' => 'Wir glauben, dass jeder Mensch wertvoll ist, dass Jesus Christus Leben verändert und dass Gemeinschaft stark macht.' ),
-		'about_link_label' => array( 'type' => 'text', 'group' => 'about', 'label' => __( 'Link-Beschriftung', 'ec-nordheide-v2' ), 'default' => 'Mehr über uns' ),
-		'about_link_url'    => array( 'type' => 'url', 'group' => 'about', 'label' => __( 'Link-Ziel', 'ec-nordheide-v2' ), 'default' => $u( '/ueber-uns/' ) ),
-
-		// Startseite: Veranstaltungen
-		'events_heading' => array( 'type' => 'text', 'group' => 'events', 'label' => __( 'Überschrift', 'ec-nordheide-v2' ), 'default' => 'Kommende Veranstaltungen' ),
-		'events_copy'    => array( 'type' => 'textarea', 'group' => 'events', 'label' => __( 'Text', 'ec-nordheide-v2' ), 'default' => 'Freizeiten, Aktionen und Treffen, bei denen du dabei sein kannst. Die vollständige Übersicht folgt hier, sobald die Anmeldung steht.' ),
-		'events_cta_label' => array( 'type' => 'text', 'group' => 'events', 'label' => __( 'Button-Beschriftung', 'ec-nordheide-v2' ), 'default' => 'Alle Veranstaltungen' ),
-		'events_cta_url'    => array( 'type' => 'url', 'group' => 'events', 'label' => __( 'Button-Ziel', 'ec-nordheide-v2' ), 'default' => $u( '/veranstaltungen/' ) ),
-
-		// Startseite: Neues aus der Nordheide
-		'news_heading' => array( 'type' => 'text', 'group' => 'news', 'label' => __( 'Überschrift', 'ec-nordheide-v2' ), 'default' => 'Neues aus der Nordheide' ),
-		'news_copy'    => array( 'type' => 'textarea', 'group' => 'news', 'label' => __( 'Text', 'ec-nordheide-v2' ), 'default' => 'Geschichten, Einblicke und aktuelle Neuigkeiten aus unserem Kreisverband.' ),
-
-		// Startseite: Team
-		'people_heading' => array( 'type' => 'text', 'group' => 'people', 'label' => __( 'Überschrift', 'ec-nordheide-v2' ), 'default' => 'Wer sich um was kümmert' ),
-		'people_copy'    => array( 'type' => 'textarea', 'group' => 'people', 'label' => __( 'Text', 'ec-nordheide-v2' ), 'default' => 'Der EC Nordheide lebt von Menschen, die Verantwortung übernehmen. Das ist eure erste Anlaufstelle für Fragen.' ),
-
-		// Startseite: Mitmachen
-		'support_heading' => array( 'type' => 'text', 'group' => 'support', 'label' => __( 'Überschrift', 'ec-nordheide-v2' ), 'default' => 'Du kannst einen Unterschied machen.' ),
-		'support_copy'    => array( 'type' => 'textarea', 'group' => 'support', 'label' => __( 'Text', 'ec-nordheide-v2' ), 'default' => 'Ob durch deine Zeit, dein Gebet oder deine Unterstützung: Danke, dass du Teil unserer Bewegung bist.' ),
-		'support_cta_label' => array( 'type' => 'text', 'group' => 'support', 'label' => __( 'Button-Beschriftung', 'ec-nordheide-v2' ), 'default' => 'Unterstütze uns' ),
-		'support_cta_url'    => array( 'type' => 'url', 'group' => 'support', 'label' => __( 'Button-Ziel', 'ec-nordheide-v2' ), 'default' => $u( '/spenden/' ) ),
+		'logo_id' => array( 'type' => 'media', 'group' => 'branding', 'label' => __( 'Logo', 'ec-nordheide-v2' ), 'default' => 0 ),
 
 		// Footer
 		'footer_claim'  => array( 'type' => 'text', 'group' => 'footer', 'label' => __( 'Footer-Unterzeile', 'ec-nordheide-v2' ), 'default' => 'Glaube, Gemeinschaft & Leben.' ),
@@ -239,26 +435,6 @@ function ec_nordheide_v2_field_schema() {
 		'color_paper'  => array( 'type' => 'color', 'group' => 'colors', 'label' => __( 'Off-White (Hintergrund)', 'ec-nordheide-v2' ), 'default' => '#f4f9ee' ),
 		'color_ink'    => array( 'type' => 'color', 'group' => 'colors', 'label' => __( 'Dunkle Farbe (Text & dunkle Flächen)', 'ec-nordheide-v2' ), 'default' => '#213214' ),
 	);
-
-	// Vierer-Karten-Gruppen: Titel/Text/Link (Altersgruppen zusätzlich mit Alterspanne).
-	$card_groups = array(
-		'audience' => array( 'items' => $audiences_default, 'has_range' => false, 'label' => __( 'Karte', 'ec-nordheide-v2' ) ),
-		'age'      => array( 'items' => $age_groups_default, 'has_range' => true, 'label' => __( 'Karte', 'ec-nordheide-v2' ) ),
-		'people'   => array( 'items' => $people_default, 'has_range' => false, 'label' => __( 'Karte', 'ec-nordheide-v2' ) ),
-	);
-	foreach ( $card_groups as $group_key => $group ) {
-		foreach ( $group['items'] as $index => $item ) {
-			$n = $index + 1;
-			$schema[ "{$group_key}{$n}_title" ] = array( 'type' => 'text', 'group' => $group_key, 'label' => sprintf( '%s %d: Titel', $group['label'], $n ), 'default' => $item['title'] );
-			if ( $group['has_range'] ) {
-				$schema[ "{$group_key}{$n}_range" ] = array( 'type' => 'text', 'group' => $group_key, 'label' => sprintf( '%s %d: Altersspanne', $group['label'], $n ), 'default' => $item['range'] );
-			}
-			$schema[ "{$group_key}{$n}_text" ] = array( 'type' => 'textarea', 'group' => $group_key, 'label' => sprintf( '%s %d: Text', $group['label'], $n ), 'default' => $item['text'] );
-			$schema[ "{$group_key}{$n}_url" ]  = array( 'type' => 'url', 'group' => $group_key, 'label' => sprintf( '%s %d: Link', $group['label'], $n ), 'default' => $item['url'] );
-		}
-	}
-
-	return $schema;
 }
 
 function ec_nordheide_v2_get_options() {
@@ -323,14 +499,11 @@ function ec_nordheide_v2_sanitize_options( $input ) {
  */
 function ec_nordheide_v2_settings_sections() {
 	return array(
-		array( 'title' => __( 'Branding & Hero', 'ec-nordheide-v2' ), 'groups' => array( 'branding' ) ),
-		array( 'title' => __( 'Startseite: Was suchst du?', 'ec-nordheide-v2' ), 'groups' => array( 'search', 'audience' ) ),
-		array( 'title' => __( 'Startseite: Altersgruppen', 'ec-nordheide-v2' ), 'groups' => array( 'age' ) ),
-		array( 'title' => __( 'Startseite: Wer wir sind', 'ec-nordheide-v2' ), 'groups' => array( 'about' ) ),
-		array( 'title' => __( 'Startseite: Veranstaltungen', 'ec-nordheide-v2' ), 'groups' => array( 'events' ) ),
-		array( 'title' => __( 'Startseite: Neues aus der Nordheide', 'ec-nordheide-v2' ), 'groups' => array( 'news' ), 'description' => __( 'Die Beiträge selbst kommen automatisch aus euren neuesten WordPress-Artikeln.', 'ec-nordheide-v2' ) ),
-		array( 'title' => __( 'Startseite: Team', 'ec-nordheide-v2' ), 'groups' => array( 'people' ), 'description' => __( 'Rollenbasiert, solange noch kein Mitarbeiter-Plugin angebunden ist. Titel kann auch ein echter Name sein.', 'ec-nordheide-v2' ) ),
-		array( 'title' => __( 'Startseite: Mitmachen', 'ec-nordheide-v2' ), 'groups' => array( 'support' ) ),
+		array(
+			'title'       => __( 'Branding', 'ec-nordheide-v2' ),
+			'groups'      => array( 'branding' ),
+			'description' => __( 'Die Startseite selbst baut ihr unter Seiten -> Neu -> Muster einfügen -> "EC Nordheide: Startseite" und passt sie dort ganz normal im Editor an.', 'ec-nordheide-v2' ),
+		),
 		array( 'title' => __( 'Footer & Links', 'ec-nordheide-v2' ), 'groups' => array( 'footer' ) ),
 		array(
 			'title'       => __( 'Farben', 'ec-nordheide-v2' ),
