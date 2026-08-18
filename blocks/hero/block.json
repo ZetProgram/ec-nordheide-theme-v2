@@ -13,6 +13,7 @@
 		"multiple": false
 	},
 	"attributes": {
+		"align": { "type": "string", "default": "full" },
 		"kicker": { "type": "string", "default": "EC Nordheide" },
 		"title": { "type": "string", "default": "Glaube, Gemeinschaft & Leben" },
 		"subtitle": { "type": "string", "default": "entschieden für Christus" },
