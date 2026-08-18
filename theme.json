@@ -6,12 +6,30 @@
     "layout": { "contentSize": "72rem", "wideSize": "90rem" },
     "color": {
       "palette": [
-        { "slug": "ink", "color": "#202020", "name": "EC Schwarz" },
-        { "slug": "paper", "color": "#f4f7ec", "name": "EC Off-White" },
-        { "slug": "orange", "color": "#e9a323", "name": "EC Orange" },
-        { "slug": "green", "color": "#66864a", "name": "EC Grün" }
+        { "slug": "ink", "color": "#213214", "name": "EC Ink" },
+        { "slug": "paper", "color": "#f4f9ee", "name": "EC Off-White" },
+        { "slug": "leaf", "color": "#92c355", "name": "EC Blattgrün" },
+        { "slug": "accent", "color": "#3f6b28", "name": "EC Waldgrün" }
       ]
     },
-    "typography": { "fluid": true }
+    "typography": {
+      "fluid": true,
+      "fontFamilies": [
+        {
+          "slug": "montserrat",
+          "name": "Montserrat",
+          "fontFamily": "'Montserrat', 'Segoe UI', system-ui, -apple-system, sans-serif"
+        }
+      ]
+    }
+  },
+  "styles": {
+    "typography": {
+      "fontFamily": "var:preset|font-family|montserrat"
+    },
+    "color": {
+      "background": "var:preset|color|paper",
+      "text": "var:preset|color|ink"
+    }
   }
 }

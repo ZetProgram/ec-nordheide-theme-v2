@@ -2,7 +2,15 @@
 
 <main id="main-content" class="ec-page ec-section ec-section--paper">
 	<div class="ec-container ec-page__container">
-		<h1 class="ec-heading"><?php the_archive_title(); ?></h1>
+		<h1 class="ec-heading">
+			<?php
+			printf(
+				/* translators: %s: search query */
+				esc_html__( 'Suchergebnisse für: %s', 'ec-nordheide-v2' ),
+				'<span>' . esc_html( get_search_query() ) . '</span>'
+			);
+			?>
+		</h1>
 		<?php if ( have_posts() ) : ?>
 			<div class="ec-news__list">
 				<?php
@@ -16,7 +24,6 @@
 							<?php endif; ?>
 						</div>
 						<div class="ec-news-card__body">
-							<p class="ec-news-card__date"><?php echo esc_html( get_the_date() ); ?></p>
 							<h2><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h2>
 							<p><?php echo esc_html( wp_trim_words( get_the_excerpt(), 22 ) ); ?></p>
 						</div>
@@ -37,7 +44,7 @@
 			</nav>
 		<?php else : ?>
 			<div class="ec-empty-state">
-				<p class="ec-copy"><?php esc_html_e( 'Hier gibt es noch keine Inhalte. Nutze die Suche oder komm später wieder vorbei.', 'ec-nordheide-v2' ); ?></p>
+				<p class="ec-copy"><?php esc_html_e( 'Dazu haben wir leider nichts gefunden. Versuch es mit einem anderen Begriff.', 'ec-nordheide-v2' ); ?></p>
 				<?php get_search_form(); ?>
 			</div>
 		<?php endif; ?>

@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400" aria-hidden="true" focusable="false">
+	<defs>
+		<clipPath id="hexClip">
+			<path d="M100 6.7 L300 6.7 L400 173.5 L300 340.3 L100 340.3 L0 173.5 Z" />
+		</clipPath>
+	</defs>
+	<g fill="none" stroke="#f4f9ee" stroke-width="1.5" opacity="0.9">
+		<path d="M100 6.7 L300 6.7 L400 173.5 L300 340.3 L100 340.3 L0 173.5 Z" transform="translate(0,-40) scale(0.55)" />
+		<path d="M100 6.7 L300 6.7 L400 173.5 L300 340.3 L100 340.3 L0 173.5 Z" transform="translate(220,120) scale(0.9)" />
+		<path d="M100 6.7 L300 6.7 L400 173.5 L300 340.3 L100 340.3 L0 173.5 Z" transform="translate(-60,240) scale(0.4)" />
+		<path d="M100 6.7 L300 6.7 L400 173.5 L300 340.3 L100 340.3 L0 173.5 Z" transform="translate(140,280) scale(0.65)" />
+	</g>
+</svg>

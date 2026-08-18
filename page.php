@@ -5,11 +5,10 @@
 get_header();
 ?>
 
-<main class="ec-page ec-section ec-section--paper">
+<main id="main-content" class="ec-page ec-section ec-section--paper">
 	<div class="ec-container ec-page__container">
 		<?php while ( have_posts() ) : the_post(); ?>
 			<article <?php post_class( 'ec-page__article' ); ?>>
-				<p class="ec-kicker"><?php echo esc_html( get_bloginfo( 'name' ) ); ?></p>
 				<h1 class="ec-heading"><?php the_title(); ?></h1>
 				<?php if ( has_post_thumbnail() ) : ?>
 					<div class="ec-page__image"><?php the_post_thumbnail( 'large' ); ?></div>
