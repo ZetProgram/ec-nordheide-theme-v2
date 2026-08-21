@@ -7,7 +7,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'EC_NORDHEIDE_V2_VERSION', '0.6.3' );
+define( 'EC_NORDHEIDE_V2_VERSION', '0.6.4' );
 
 // GitHub-basierte Theme-Updates. Das Repository wird als Release-Quelle verwendet.
 $ec_nordheide_update_checker = get_theme_file_path( 'lib/plugin-update-checker/plugin-update-checker.php' );
