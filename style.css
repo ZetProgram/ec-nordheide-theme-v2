@@ -2,7 +2,7 @@
 Theme Name: EC Nordheide v2
 Theme URI: https://www.ec-nordheide.de
 Description: Template für den EC Nordheide
-Version: 0.6.6
+Version: 0.6.7
 GitHub Theme URI: https://github.com/ZetProgram/ec-nordheide-theme-v2
 Primary Branch: production
 Author: Fabian Bross
@@ -575,8 +575,13 @@ button { font-family: var(--ec-font); }
 --------------------------------------------------------------- */
 .ec-page__container { max-width: 62rem; padding: 6rem 0 5rem; }
 /* Startseite: Hero-Block soll bündig am oberen Rand beginnen, seine
-   eigene Innen-Abstand sorgt bereits für Abstand zum schwebenden Header. */
+   eigene Innen-Abstand sorgt bereits für Abstand zum schwebenden Header.
+   padding-top:0 allein reicht nicht: der 2rem margin-top von
+   .ec-page__content (unten) collapst durch alle dazwischenliegenden
+   Elemente (keins von ihnen hat eigenes Padding/Border), bis ganz nach
+   oben zum Viewport-Rand - sichtbar als heller Streifen über Header/Hero. */
 .ec-page__container--flush { padding-top: 0; }
+.ec-page__container--flush .ec-page__content { margin-top: 0; }
 .ec-page__article { max-width: 58rem; margin-inline: auto; }
 .ec-page__image { margin: 2rem 0; overflow: hidden; border-radius: var(--ec-radius-lg); }
 .ec-page__content { margin-top: 2rem; color: var(--ec-ink-soft); font-size: 1.08rem; line-height: 1.7; }
@@ -600,7 +605,10 @@ button { font-family: var(--ec-font); }
 	transform: translateX(-50%);
 }
 .ec-page__content h2, .ec-page__content h3 { margin-top: 2.2rem; color: var(--ec-ink); line-height: 1.2; scroll-margin-top: 6rem; }
-.ec-page__content a { color: var(--ec-accent); font-weight: 700; }
+/* :not(.ec-button) - sonst gewinnt diese Regel gegen die Button-Textfarbe
+   (eine Klasse + Element schlägt eine reine Klasse), Buttons sind gestaltete
+   Komponenten und keine einfachen Fließtext-Links. */
+.ec-page__content a:not(.ec-button) { color: var(--ec-accent); font-weight: 700; }
 .ec-page__content img { border-radius: var(--ec-radius-md); }
 .ec-page__meta { margin: 0 0 .6rem; color: var(--ec-accent); font-size: .85rem; font-weight: 800; text-transform: uppercase; }
 
