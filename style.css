@@ -2,7 +2,7 @@
 Theme Name: EC Nordheide v2
 Theme URI: https://www.ec-nordheide.de
 Description: Template für den EC Nordheide
-Version: 0.6.5
+Version: 0.6.6
 GitHub Theme URI: https://github.com/ZetProgram/ec-nordheide-theme-v2
 Primary Branch: production
 Author: Fabian Bross
@@ -577,7 +577,7 @@ button { font-family: var(--ec-font); }
 /* Startseite: Hero-Block soll bündig am oberen Rand beginnen, seine
    eigene Innen-Abstand sorgt bereits für Abstand zum schwebenden Header. */
 .ec-page__container--flush { padding-top: 0; }
-.ec-page__article { max-width: 58rem; }
+.ec-page__article { max-width: 58rem; margin-inline: auto; }
 .ec-page__image { margin: 2rem 0; overflow: hidden; border-radius: var(--ec-radius-lg); }
 .ec-page__content { margin-top: 2rem; color: var(--ec-ink-soft); font-size: 1.08rem; line-height: 1.7; }
 /* Normale Blöcke bleiben lesbar schmal; Blöcke mit "Breite"/"Volle Breite"
