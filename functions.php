@@ -7,7 +7,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'EC_NORDHEIDE_V2_VERSION', '0.6.2' );
+define( 'EC_NORDHEIDE_V2_VERSION', '0.6.3' );
 
 // GitHub-basierte Theme-Updates. Das Repository wird als Release-Quelle verwendet.
 $ec_nordheide_update_checker = get_theme_file_path( 'lib/plugin-update-checker/plugin-update-checker.php' );
@@ -231,34 +231,50 @@ add_action(
 
 <!-- wp:group {"align":"full","className":"is-style-ec-paper","layout":{"type":"constrained"}} -->
 <div class="wp-block-group alignfull is-style-ec-paper">
-<!-- wp:heading {"className":"ec-heading"} -->
-<h2 class="wp-block-heading ec-heading">Wer wir sind</h2>
-<!-- /wp:heading -->
+<!-- wp:group {"className":"ec-split","layout":{"type":"default"}} -->
+<div class="wp-block-group ec-split">
+<!-- wp:html -->
+<div class="ec-about-preview__media" aria-hidden="true"></div>
+<!-- /wp:html -->
 
-<!-- wp:paragraph {"className":"ec-copy"} -->
-<p class="ec-copy">Wir sind der EC Nordheide: junge Menschen, engagierte Mitarbeitende und Gemeinden, die gemeinsam unterwegs sind. Wir glauben, dass jeder Mensch wertvoll ist, dass Jesus Christus Leben verändert und dass Gemeinschaft stark macht.</p>
+<!-- wp:group {"className":"ec-about-preview__copy","layout":{"type":"constrained"}} -->
+<div class="wp-block-group ec-about-preview__copy">
+<!-- wp:paragraph -->
+<p>Wir sind der EC Nordheide: junge Menschen, engagierte Mitarbeitende und Gemeinden, die gemeinsam unterwegs sind.</p>
 <!-- /wp:paragraph -->
 
-<!-- wp:buttons -->
-<div class="wp-block-buttons">
-<!-- wp:button -->
-<div class="wp-block-button"><a class="wp-block-button__link wp-element-button" href="{$home}/ueber-uns/">Mehr über uns</a></div>
-<!-- /wp:button -->
+<!-- wp:paragraph -->
+<p>Wir glauben, dass jeder Mensch wertvoll ist, dass Jesus Christus Leben verändert und dass Gemeinschaft stark macht.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p><a class="ec-text-link" href="{$home}/ueber-uns/">Mehr über uns →</a></p>
+<!-- /wp:paragraph -->
 </div>
-<!-- /wp:buttons -->
+<!-- /wp:group -->
+</div>
+<!-- /wp:group -->
 </div>
 <!-- /wp:group -->
 
 <!-- wp:group {"align":"full","className":"is-style-ec-dark","layout":{"type":"constrained"}} -->
 <div class="wp-block-group alignfull is-style-ec-dark">
+<!-- wp:group {"className":"ec-split ec-split--center","layout":{"type":"default"}} -->
+<div class="wp-block-group ec-split ec-split--center">
+<!-- wp:group {"layout":{"type":"constrained"}} -->
+<div class="wp-block-group">
 <!-- wp:heading {"className":"ec-heading"} -->
 <h2 class="wp-block-heading ec-heading">Kommende Veranstaltungen</h2>
 <!-- /wp:heading -->
 
 <!-- wp:paragraph {"className":"ec-copy"} -->
-<p class="ec-copy">Freizeiten, Aktionen und Treffen, bei denen du dabei sein kannst.</p>
+<p class="ec-copy">Freizeiten, Aktionen und Treffen, bei denen du dabei sein kannst. Die vollständige Übersicht folgt hier, sobald die Anmeldung steht.</p>
 <!-- /wp:paragraph -->
+</div>
+<!-- /wp:group -->
 
+<!-- wp:group {"className":"ec-event-placeholder","layout":{"type":"flex","justifyContent":"center"}} -->
+<div class="wp-block-group ec-event-placeholder">
 <!-- wp:buttons -->
 <div class="wp-block-buttons">
 <!-- wp:button -->
@@ -266,6 +282,10 @@ add_action(
 <!-- /wp:button -->
 </div>
 <!-- /wp:buttons -->
+</div>
+<!-- /wp:group -->
+</div>
+<!-- /wp:group -->
 </div>
 <!-- /wp:group -->
 
