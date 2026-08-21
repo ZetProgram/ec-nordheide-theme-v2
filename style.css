@@ -176,7 +176,7 @@ button { font-family: var(--ec-font); }
 .site-shell { min-height: 100vh; }
 .ec-container { width: min(calc(100% - 2.5rem), var(--ec-content)); margin-inline: auto; }
 .ec-container--narrow { width: min(calc(100% - 2.5rem), 46rem); margin-inline: auto; }
-.ec-section { padding: clamp(3.5rem, 8vw, 7rem) 0; }
+.ec-section { padding: 7rem 0; }
 .ec-section--paper { background: var(--ec-paper); }
 .ec-section--dark { background: var(--ec-ink); color: var(--ec-paper); }
 .ec-section--accent { background: var(--ec-accent); color: var(--ec-paper); }
@@ -202,7 +202,7 @@ button { font-family: var(--ec-font); }
 .ec-heading {
 	margin: 0;
 	color: var(--ec-ink);
-	font-size: clamp(1.9rem, 3.6vw, 3.2rem);
+	font-size: 3.2rem;
 	font-weight: 800;
 	line-height: 1.05;
 	letter-spacing: -.01em;
@@ -213,7 +213,7 @@ button { font-family: var(--ec-font); }
 	max-width: 40rem;
 	margin: 1.1rem 0 0;
 	color: var(--ec-ink-soft);
-	font-size: clamp(1.02rem, 1.4vw, 1.18rem);
+	font-size: 1.18rem;
 	line-height: 1.65;
 }
 .ec-copy--light { color: rgba(244, 249, 238, .84); }
@@ -389,7 +389,7 @@ button { font-family: var(--ec-font); }
 .ec-hero__title {
 	max-width: 54rem;
 	margin: 0;
-	font-size: clamp(2.4rem, 4.6vw, 4rem);
+	font-size: 4rem;
 	font-weight: 900;
 	line-height: 1.05;
 	letter-spacing: -.01em;
@@ -399,7 +399,7 @@ button { font-family: var(--ec-font); }
 	max-width: 32rem;
 	margin: 1.1rem 0 2rem;
 	color: rgba(244, 249, 238, .88);
-	font-size: clamp(1.1rem, 2vw, 1.4rem);
+	font-size: 1.4rem;
 	font-weight: 500;
 }
 
@@ -470,7 +470,7 @@ button { font-family: var(--ec-font); }
 /* ---------------------------------------------------------------
    Split-Layouts (Wer wir sind, Unterstützen)
 --------------------------------------------------------------- */
-.ec-split { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(2.5rem, 6vw, 6rem); align-items: start; }
+.ec-split { display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: start; }
 .ec-split--center { align-items: center; }
 .ec-about-preview__media {
 	position: relative;
@@ -551,7 +551,7 @@ button { font-family: var(--ec-font); }
 /* ---------------------------------------------------------------
    Seiten- / Beitrags-Templates
 --------------------------------------------------------------- */
-.ec-page__container { max-width: 62rem; padding: 6rem 0 clamp(3rem, 6vw, 5rem); }
+.ec-page__container { max-width: 62rem; padding: 6rem 0 5rem; }
 /* Startseite: Hero-Block soll bündig am oberen Rand beginnen, seine
    eigene Innen-Abstand sorgt bereits für Abstand zum schwebenden Header. */
 .ec-page__container--flush { padding-top: 0; }
@@ -606,7 +606,7 @@ button { font-family: var(--ec-font); }
 --------------------------------------------------------------- */
 .site-footer { padding: 4.5rem 0 1.75rem; background: var(--ec-paper); border-top: 1px solid var(--ec-line); }
 .site-footer__grid { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 2.5rem; }
-.site-footer__title { margin: 0 0 .5rem; font-size: clamp(2.4rem, 6.5vw, 4.6rem); font-weight: 900; letter-spacing: -.03em; text-transform: uppercase; color: var(--ec-ink); }
+.site-footer__title { margin: 0 0 .5rem; font-size: 4.6rem; font-weight: 900; letter-spacing: -.03em; text-transform: uppercase; color: var(--ec-ink); }
 .site-footer__grid p { color: var(--ec-ink-soft); }
 .site-footer__grid strong { display: block; margin-bottom: .6rem; font-size: .85rem; letter-spacing: .08em; text-transform: uppercase; color: var(--ec-ink); }
 .site-footer__grid a { text-decoration: none; color: var(--ec-ink-soft); }
@@ -626,7 +626,7 @@ button { font-family: var(--ec-font); }
 .wp-block-group.is-style-ec-paper,
 .wp-block-group.is-style-ec-dark,
 .wp-block-group.is-style-ec-accent {
-	padding: clamp(3.5rem, 8vw, 7rem) clamp(1.25rem, 4vw, 3rem);
+	padding: 7rem 3rem;
 }
 .wp-block-group.is-style-ec-paper { background: var(--ec-paper); color: var(--ec-ink); }
 .wp-block-group.is-style-ec-dark { background: var(--ec-ink); color: var(--ec-paper); }
@@ -657,7 +657,7 @@ button { font-family: var(--ec-font); }
 }
 .wp-block-group.is-style-ec-card-strip > * { flex: 0 0 min(78%, 19rem); scroll-snap-align: start; }
 
-.wp-block-columns.is-style-ec-split { gap: clamp(2.5rem, 6vw, 6rem); align-items: center; }
+.wp-block-columns.is-style-ec-split { gap: 6rem; align-items: center; }
 .wp-block-columns.is-style-ec-split img { border-radius: var(--ec-radius-lg); aspect-ratio: 4 / 5; object-fit: cover; width: 100%; }
 
 .wp-block-paragraph.is-style-ec-kicker,
@@ -707,6 +707,20 @@ p.is-style-ec-kicker {
 
 	.ec-hero { min-height: 38rem; }
 	.ec-hero__content { padding: 6rem 0 2.75rem; }
+	.ec-hero__title { font-size: 3rem; }
+	.ec-hero__subtitle { font-size: 1.2rem; }
+
+	.ec-section { padding: 5rem 0; }
+	.ec-heading { font-size: 2.6rem; }
+	.ec-copy { font-size: 1.1rem; }
+	.ec-split, .wp-block-columns.is-style-ec-split { gap: 3rem; }
+	.ec-page__container { padding-bottom: 3.5rem; }
+	.site-footer__title { font-size: 3.4rem; }
+	.wp-block-group.is-style-ec-paper,
+	.wp-block-group.is-style-ec-dark,
+	.wp-block-group.is-style-ec-accent {
+		padding: 5rem 1.75rem;
+	}
 
 	.ec-audience-grid, .ec-people-grid,
 	.ec-news__list, .site-footer__grid, .ec-split {
@@ -721,4 +735,17 @@ p.is-style-ec-kicker {
 }
 @media (max-width: 560px) {
 	.ec-people-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+
+	.ec-hero__title { font-size: 2.4rem; }
+	.ec-hero__subtitle { font-size: 1.1rem; }
+	.ec-section { padding: 3.5rem 0; }
+	.ec-heading { font-size: 1.9rem; }
+	.ec-copy { font-size: 1.02rem; }
+	.ec-page__container { padding-bottom: 3rem; }
+	.site-footer__title { font-size: 2.4rem; }
+	.wp-block-group.is-style-ec-paper,
+	.wp-block-group.is-style-ec-dark,
+	.wp-block-group.is-style-ec-accent {
+		padding: 3.5rem 1.25rem;
+	}
 }
