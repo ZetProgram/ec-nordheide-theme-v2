@@ -3,7 +3,7 @@
   "version": 3,
   "settings": {
     "appearanceTools": true,
-    "layout": { "contentSize": "72rem", "wideSize": "90rem" },
+    "layout": { "contentSize": "75rem", "wideSize": "90rem" },
     "color": {
       "palette": [
         { "slug": "ink", "color": "#213214", "name": "EC Ink" },

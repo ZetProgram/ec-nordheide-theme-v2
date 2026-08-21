@@ -257,4 +257,33 @@
 			return null;
 		},
 	} );
+
+	/**
+	 * "EC Sektion": eine Gruppe, die schon richtig eingestellt ist -
+	 * Hintergrund geht über die volle Bildschirmbreite (Breite: "Volle Breite"),
+	 * der Inhalt bleibt zentriert in der festen Inhaltsbreite aus theme.json
+	 * (Layout: "Eingegrenzt"). Genau das Muster, das auch Hero, Karten-Bereiche
+	 * usw. auf der Startseite verwenden - hier als ein-Klick-Baustein, damit
+	 * man es beim freien Bauen nicht von Hand in der Seitenleiste einstellen muss.
+	 */
+	if ( wp.blocks.registerBlockVariation ) {
+		wp.blocks.registerBlockVariation( 'core/group', {
+			name: 'ec-section',
+			title: __( 'EC Sektion (volle Breite, zentrierter Inhalt)', 'ec-nordheide-v2' ),
+			description: __(
+				'Hintergrund über die volle Fensterbreite, Inhalt darin zentriert mit fester Maximalbreite - wie die Bereiche auf der Startseite. Hintergrundfarbe danach über "Stile" (EC Papier/Dunkel/Akzent) wählen.',
+				'ec-nordheide-v2'
+			),
+			icon: 'align-wide',
+			scope: [ 'inserter', 'transform' ],
+			attributes: {
+				align: 'full',
+				layout: { type: 'constrained' },
+			},
+			innerBlocks: [
+				[ 'core/heading', { level: 2, className: 'ec-heading', placeholder: __( 'Überschrift', 'ec-nordheide-v2' ) } ],
+				[ 'core/paragraph', { className: 'ec-copy', placeholder: __( 'Text', 'ec-nordheide-v2' ) } ],
+			],
+		} );
+	}
 } )( window.wp );
