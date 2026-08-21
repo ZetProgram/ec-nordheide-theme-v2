@@ -433,6 +433,23 @@ button { font-family: var(--ec-font); }
 .ec-card--soft p { color: var(--ec-ink); opacity: .78; }
 .ec-card--dark { background: var(--ec-ink); color: var(--ec-paper); }
 .ec-card--dark p { color: rgba(244, 249, 238, .78); }
+/* Diese Karte ist selbst ein <a>-Element. Der Block-Editor erlaubt es,
+   die Textfarbe von Links pro Bereich (Elemente -> Link) zu ändern - das
+   erzeugt eine ":where(.wp-elements-N) a"-Regel, die bei gleicher
+   Spezifität (eine Klasse + Element) je nach Ladereihenfolge über die
+   Kartenfarbe oben gewinnen kann. Genauso überschreibt die allgemeine
+   Fließtext-Regel ".ec-page__content h2, h3" sonst die Überschriften-
+   farbe der Karten. Zwei Klassen auf demselben Element (statt einer)
+   geben diesen Regeln hier zuverlässig Vorrang, unabhängig von Lade-
+   reihenfolge oder Editor-Einstellungen auf übergeordneten Blöcken. */
+.ec-audience-card.ec-card--leaf,
+.ec-audience-card.ec-card--leaf h3 { color: var(--ec-ink); }
+.ec-audience-card.ec-card--paper,
+.ec-audience-card.ec-card--paper h3 { color: var(--ec-ink); }
+.ec-audience-card.ec-card--soft,
+.ec-audience-card.ec-card--soft h3 { color: var(--ec-ink); }
+.ec-audience-card.ec-card--dark,
+.ec-audience-card.ec-card--dark h3 { color: var(--ec-paper); }
 /* Aliase für Bestandscode */
 .ec-card--green { background: var(--ec-leaf); color: var(--ec-ink); }
 .ec-card--green p { color: var(--ec-ink); opacity: .78; }
@@ -466,6 +483,11 @@ button { font-family: var(--ec-font); }
 .ec-age-card h3 { margin: 2.4rem 0 .6rem; font-size: 1.4rem; font-weight: 800; text-transform: uppercase; }
 .ec-age-card p { margin: 0; color: rgba(244, 249, 238, .8); font-size: .96rem; }
 .ec-age-card .ec-card-link { color: var(--ec-paper); opacity: .9; }
+/* Gleicher Grund wie bei .ec-audience-card oben: über den Ankertext
+   hinausgehende Spezifität, damit Editor-Link-/Elemente-Einstellungen
+   und die Fließtext-Überschriftenfarbe hier nicht gewinnen. */
+.ec-age-strip .ec-age-card,
+.ec-age-strip .ec-age-card h3 { color: var(--ec-paper); }
 
 /* ---------------------------------------------------------------
    Split-Layouts (Wer wir sind, Unterstützen)
@@ -559,14 +581,23 @@ button { font-family: var(--ec-font); }
 .ec-page__image { margin: 2rem 0; overflow: hidden; border-radius: var(--ec-radius-lg); }
 .ec-page__content { margin-top: 2rem; color: var(--ec-ink-soft); font-size: 1.08rem; line-height: 1.7; }
 /* Normale Blöcke bleiben lesbar schmal; Blöcke mit "Breite"/"Volle Breite"
-   (Gruppe/Hero/Spalten) dürfen aus dem schmalen Artikel-Rahmen ausbrechen. */
-.ec-page__content > :where(:not(.alignwide):not(.alignfull)) { max-width: 100%; }
-.ec-page__content > .alignwide { max-width: var(--ec-content); width: 100%; }
-.ec-page__content > .alignfull {
+   (Gruppe/Hero/Spalten) dürfen aus dem schmalen Artikel-Rahmen ausbrechen -
+   auch dann, wenn sie (wie bei den Startseiten-Bereichen) nicht direkt in
+   .ec-page__content liegen, sondern in einer weiteren Gruppe verschachtelt
+   sind (deshalb Nachfahren- statt Kind-Selektor). */
+.ec-page__content :where(:not(.alignwide):not(.alignfull)) { max-width: 100%; }
+.ec-page__content .alignwide { max-width: var(--ec-content); width: 100%; margin-inline: auto; }
+.ec-page__content .alignfull {
 	width: 100vw;
 	max-width: 100vw;
-	margin-left: calc(50% - 50vw);
-	margin-right: calc(50% - 50vw);
+	/* Zentrierung über transform statt "calc(50% - 50vw)": Letzteres
+	   mischt die Breite des (schmalen) Eltern-Elements mit der Fenster-
+	   breite inklusive Scrollbar und versetzt den Bereich dadurch spürbar
+	   nach links - rechts blieb sichtbar Platz frei ("Hero nicht 100vw").
+	   transform bezieht sich auf die eigene, bereits berechnete Breite und
+	   bleibt unabhängig von Scrollbar-Breite exakt mittig. */
+	margin-left: 50%;
+	transform: translateX(-50%);
 }
 .ec-page__content h2, .ec-page__content h3 { margin-top: 2.2rem; color: var(--ec-ink); line-height: 1.2; scroll-margin-top: 6rem; }
 .ec-page__content a { color: var(--ec-accent); font-weight: 700; }
