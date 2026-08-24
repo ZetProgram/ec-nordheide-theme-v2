@@ -13,10 +13,11 @@
 - Block-Name `ec/news`, Block-Kategorie „EC Nordheide" (`ec-nordheide`), Attribute `postsPerPage` (number, Standard `3`) und `categoryId` (number, Standard `0` = „Alle Kategorien").
 - Kein `ServerSideRender` im Editor – Grund siehe `assets/js/blocks-editor.js:8` ("Cannot read properties of null, reading 'addEventListener'"). Editor-Vorschau läuft über `wp.data`.
 - Textanfang wird **immer** automatisch aus `post_content` geschnitten (~22 Wörter, WordPress-Ellipse `…`), nie das manuelle Auszug-Feld.
-- Beitrag ohne Beitragsbild → kein Bildbereich, Karte bekommt zusätzlich die Klasse `ec-news-card--no-image`.
+- Beitrag ohne Beitragsbild → kein Bildbereich, Karte bekommt zusätzlich die Klasse `ec-newsfeed-card--no-image`.
 - Die ganze Karte ist ein `<a>`-Link zum Beitrag (nicht nur der Titel).
 - Frontend-Wahrheit ist ausschließlich `render.php`; die Editor-Vorschau ist eine Annäherung mit echten Daten, keine exakte Kopie.
 - Design-Tokens aus `style.css` verwenden: `--ec-surface`, `--ec-ink`, `--ec-ink-soft`, `--ec-accent`, `--ec-radius-lg`, `--ec-shadow-sm`, `--ec-shadow`.
+- **Korrektur nach Task-2-Review:** `style.css` enthält bereits eine ältere `.ec-news-card`/`.ec-news__list`-Familie, die aktiv von `index.php`, `archive.php` und `search.php` für die normale Blog-Beitragsliste genutzt wird. Das war beim ursprünglichen Entwurf nicht geprüft worden und hätte zu kollidierenden CSS-Regeln geführt. Deshalb nutzt der `ec/news`-Block einen eigenen Namensraum: `ec-newsfeed-grid`/`ec-newsfeed-card` (statt `ec-news-grid`/`ec-news-card`). Die Blog-Vorlagen (`index.php`, `archive.php`, `search.php`) bleiben unverändert.
 - **Kein lokales WordPress vorhanden** in dieser Umgebung (nur XAMPP ohne installierte Seite, kein `wp-env`). Die Browser-/Editor-Prüfungen in Task 3 und Task 5 müssen manuell auf einer WordPress-Instanz mit aktivem Theme durchgeführt werden (lokal installieren oder die Test-Seite `www.test.ec-nordheide.de`), sobald eine verfügbar ist. Alles andere (PHP-Syntax, Dateiinhalt) lässt sich ohne WordPress prüfen.
 
 ---
@@ -29,7 +30,7 @@
 - Modify: `functions.php` (Block-Registrierung neben `ec/hero`/`ec/card`)
 
 **Interfaces:**
-- Produces: Block `ec/news` mit Attributen `postsPerPage` (number, Default `3`) und `categoryId` (number, Default `0`). Frontend-Markup: `div.ec-news-grid > a.ec-news-card(.ec-news-card--no-image) > div.ec-news-card__media > img` (optional) `+ div.ec-news-card__body > div.ec-news-card__meta > span×(1-2), h3.ec-news-card__title, p.ec-news-card__excerpt`.
+- Produces: Block `ec/news` mit Attributen `postsPerPage` (number, Default `3`) und `categoryId` (number, Default `0`). Frontend-Markup: `div.ec-newsfeed-grid > a.ec-newsfeed-card(.ec-newsfeed-card--no-image) > div.ec-newsfeed-card__media > img` (optional) `+ div.ec-newsfeed-card__body > div.ec-newsfeed-card__meta > span×(1-2), h3.ec-newsfeed-card__title, p.ec-newsfeed-card__excerpt`.
 
 - [ ] **Step 1: `blocks/news/block.json` anlegen**
 
@@ -104,7 +105,7 @@ if ( ! $ec_news_query->have_posts() ) {
 	return;
 }
 
-$wrapper_attributes = get_block_wrapper_attributes( array( 'class' => 'ec-news-grid' ) );
+$wrapper_attributes = get_block_wrapper_attributes( array( 'class' => 'ec-newsfeed-grid' ) );
 ?>
 <div <?php echo $wrapper_attributes; /* phpcs:ignore, von WP escaped */ ?>>
 	<?php
@@ -114,21 +115,21 @@ $wrapper_attributes = get_block_wrapper_attributes( array( 'class' => 'ec-news-g
 		$ec_news_cats     = get_the_category( $ec_news_post_id );
 		$ec_news_cat_name = ! empty( $ec_news_cats ) ? $ec_news_cats[0]->name : '';
 		$ec_news_has_img  = has_post_thumbnail( $ec_news_post_id );
-		$ec_news_card_cls = 'ec-news-card' . ( $ec_news_has_img ? '' : ' ec-news-card--no-image' );
+		$ec_news_card_cls = 'ec-newsfeed-card' . ( $ec_news_has_img ? '' : ' ec-newsfeed-card--no-image' );
 		?>
 		<a class="<?php echo esc_attr( $ec_news_card_cls ); ?>" href="<?php echo esc_url( get_permalink( $ec_news_post_id ) ); ?>">
 			<?php if ( $ec_news_has_img ) : ?>
-				<div class="ec-news-card__media">
+				<div class="ec-newsfeed-card__media">
 					<?php echo get_the_post_thumbnail( $ec_news_post_id, 'medium_large' ); ?>
 				</div>
 			<?php endif; ?>
-			<div class="ec-news-card__body">
-				<div class="ec-news-card__meta">
+			<div class="ec-newsfeed-card__body">
+				<div class="ec-newsfeed-card__meta">
 					<span><?php echo esc_html( get_the_date( '', $ec_news_post_id ) ); ?></span>
 					<?php if ( $ec_news_cat_name ) : ?><span><?php echo esc_html( $ec_news_cat_name ); ?></span><?php endif; ?>
 				</div>
-				<h3 class="ec-news-card__title"><?php echo esc_html( get_the_title( $ec_news_post_id ) ); ?></h3>
-				<p class="ec-news-card__excerpt"><?php echo esc_html( ec_nordheide_v2_news_excerpt( $ec_news_post_id ) ); ?></p>
+				<h3 class="ec-newsfeed-card__title"><?php echo esc_html( get_the_title( $ec_news_post_id ) ); ?></h3>
+				<p class="ec-newsfeed-card__excerpt"><?php echo esc_html( ec_nordheide_v2_news_excerpt( $ec_news_post_id ) ); ?></p>
 			</div>
 		</a>
 		<?php
@@ -173,7 +174,7 @@ git commit -m "Add ec/news block scaffold and frontend rendering"
 - Modify: `style.css` (neue Regeln direkt nach den bestehenden `.ec-person-card`-Regeln)
 
 **Interfaces:**
-- Consumes: CSS-Klassen aus Task 1 (`ec-news-grid`, `ec-news-card`, `ec-news-card--no-image`, `ec-news-card__media`, `ec-news-card__body`, `ec-news-card__meta`, `ec-news-card__title`, `ec-news-card__excerpt`).
+- Consumes: CSS-Klassen aus Task 1 (`ec-newsfeed-grid`, `ec-newsfeed-card`, `ec-newsfeed-card--no-image`, `ec-newsfeed-card__media`, `ec-newsfeed-card__body`, `ec-newsfeed-card__meta`, `ec-newsfeed-card__title`, `ec-newsfeed-card__excerpt`).
 - Produces: fertiges Kartenraster-Aussehen, das Task 3 (Editor-Vorschau) 1:1 wiederverwendet.
 
 - [ ] **Step 1: CSS-Regeln ergänzen**
@@ -191,12 +192,12 @@ folgenden Block einfügen:
 /* ---------------------------------------------------------------
    EC News: Karten-Raster für den ec/news Block
 --------------------------------------------------------------- */
-.ec-news-grid {
+.ec-newsfeed-grid {
 	display: grid;
 	grid-template-columns: repeat( auto-fit, minmax( 260px, 1fr ) );
 	gap: 1.5rem;
 }
-.ec-news-card {
+.ec-newsfeed-card {
 	display: flex;
 	flex-direction: column;
 	background: var(--ec-surface);
@@ -207,20 +208,20 @@ folgenden Block einfügen:
 	text-decoration: none;
 	transition: transform .2s ease, box-shadow .2s ease;
 }
-.ec-news-card:hover, .ec-news-card:focus-visible {
+.ec-newsfeed-card:hover, .ec-newsfeed-card:focus-visible {
 	transform: translateY(-.3rem);
 	box-shadow: var(--ec-shadow);
 }
-.ec-news-card__media { aspect-ratio: 16 / 10; overflow: hidden; }
-.ec-news-card__media img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.ec-news-card__body { padding: 1.5rem; display: flex; flex-direction: column; gap: .5rem; }
-.ec-news-card__meta {
+.ec-newsfeed-card__media { aspect-ratio: 16 / 10; overflow: hidden; }
+.ec-newsfeed-card__media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.ec-newsfeed-card__body { padding: 1.5rem; display: flex; flex-direction: column; gap: .5rem; }
+.ec-newsfeed-card__meta {
 	font-size: .78rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase;
 	color: var(--ec-accent); display: flex; gap: .6rem; flex-wrap: wrap;
 }
-.ec-news-card__title { margin: 0; font-size: 1.2rem; font-weight: 800; color: var(--ec-ink); }
-.ec-news-card__excerpt { margin: 0; font-size: .95rem; color: var(--ec-ink-soft); }
-.ec-news-card--no-image .ec-news-card__body { padding-top: 1.75rem; }
+.ec-newsfeed-card__title { margin: 0; font-size: 1.2rem; font-weight: 800; color: var(--ec-ink); }
+.ec-newsfeed-card__excerpt { margin: 0; font-size: .95rem; color: var(--ec-ink-soft); }
+.ec-newsfeed-card--no-image .ec-newsfeed-card__body { padding-top: 1.75rem; }
 ```
 
 - [ ] **Step 2: Geschweifte Klammern zählen (einfache Syntaxprüfung ohne CSS-Linter im Projekt)**
@@ -232,7 +233,7 @@ Expected: beide Zahlen sind identisch (vorher schon gleich, durch den neuen Bloc
 
 ```bash
 git add style.css
-git commit -m "Add ec-news-card grid styles"
+git commit -m "Add ec-newsfeed-card grid styles"
 ```
 
 ---
@@ -315,7 +316,7 @@ Direkt nach dem Ende der bestehenden `registerBlockType( 'ec/card', { ... } );`-
 		edit: function ( props ) {
 			var a = props.attributes;
 			var setAttributes = props.setAttributes;
-			var blockProps = useBlockProps( { className: 'ec-news-grid-editor-wrap' } );
+			var blockProps = useBlockProps( { className: 'ec-newsfeed-grid-editor-wrap' } );
 
 			var categories = useSelect( function ( select ) {
 				return select( 'core' ).getEntityRecords( 'taxonomy', 'category', { per_page: -1 } );
@@ -351,7 +352,7 @@ Direkt nach dem Ende der bestehenden `registerBlockType( 'ec/card', { ... } );`-
 			} else {
 				body = el(
 					'div',
-					{ className: 'ec-news-grid' },
+					{ className: 'ec-newsfeed-grid' },
 					posts.map( function ( post ) {
 						var media = post._embedded && post._embedded[ 'wp:featuredmedia' ] && post._embedded[ 'wp:featuredmedia' ][ 0 ];
 						var imageUrl = media && media.source_url ? media.source_url : '';
@@ -361,23 +362,23 @@ Direkt nach dem Ende der bestehenden `registerBlockType( 'ec/card', { ... } );`-
 						return el(
 							'div',
 							{
-								className: 'ec-news-card' + ( imageUrl ? '' : ' ec-news-card--no-image' ),
+								className: 'ec-newsfeed-card' + ( imageUrl ? '' : ' ec-newsfeed-card--no-image' ),
 								key: post.id,
 							},
 							imageUrl
-								? el( 'div', { className: 'ec-news-card__media' }, el( 'img', { src: imageUrl, alt: '' } ) )
+								? el( 'div', { className: 'ec-newsfeed-card__media' }, el( 'img', { src: imageUrl, alt: '' } ) )
 								: null,
 							el(
 								'div',
-								{ className: 'ec-news-card__body' },
+								{ className: 'ec-newsfeed-card__body' },
 								el(
 									'div',
-									{ className: 'ec-news-card__meta' },
+									{ className: 'ec-newsfeed-card__meta' },
 									el( 'span', {}, formatNewsDate( post.date ) ),
 									catName ? el( 'span', {}, catName ) : null
 								),
-								el( 'h3', { className: 'ec-news-card__title' }, stripHtml( post.title && post.title.rendered ) ),
-								el( 'p', { className: 'ec-news-card__excerpt' }, excerpt )
+								el( 'h3', { className: 'ec-newsfeed-card__title' }, stripHtml( post.title && post.title.rendered ) ),
+								el( 'p', { className: 'ec-newsfeed-card__excerpt' }, excerpt )
 							)
 						);
 					} )
