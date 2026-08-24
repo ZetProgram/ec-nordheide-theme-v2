@@ -38,7 +38,7 @@ if ( ! $ec_news_query->have_posts() ) {
 	return;
 }
 
-$wrapper_attributes = get_block_wrapper_attributes( array( 'class' => 'ec-news-grid' ) );
+$wrapper_attributes = get_block_wrapper_attributes( array( 'class' => 'ec-newsfeed-grid' ) );
 ?>
 <div <?php echo $wrapper_attributes; /* phpcs:ignore, von WP escaped */ ?>>
 	<?php
@@ -48,21 +48,21 @@ $wrapper_attributes = get_block_wrapper_attributes( array( 'class' => 'ec-news-g
 		$ec_news_cats     = get_the_category( $ec_news_post_id );
 		$ec_news_cat_name = ! empty( $ec_news_cats ) ? $ec_news_cats[0]->name : '';
 		$ec_news_has_img  = has_post_thumbnail( $ec_news_post_id );
-		$ec_news_card_cls = 'ec-news-card' . ( $ec_news_has_img ? '' : ' ec-news-card--no-image' );
+		$ec_news_card_cls = 'ec-newsfeed-card' . ( $ec_news_has_img ? '' : ' ec-newsfeed-card--no-image' );
 		?>
 		<a class="<?php echo esc_attr( $ec_news_card_cls ); ?>" href="<?php echo esc_url( get_permalink( $ec_news_post_id ) ); ?>">
 			<?php if ( $ec_news_has_img ) : ?>
-				<div class="ec-news-card__media">
+				<div class="ec-newsfeed-card__media">
 					<?php echo get_the_post_thumbnail( $ec_news_post_id, 'medium_large' ); ?>
 				</div>
 			<?php endif; ?>
-			<div class="ec-news-card__body">
-				<div class="ec-news-card__meta">
+			<div class="ec-newsfeed-card__body">
+				<div class="ec-newsfeed-card__meta">
 					<span><?php echo esc_html( get_the_date( '', $ec_news_post_id ) ); ?></span>
 					<?php if ( $ec_news_cat_name ) : ?><span><?php echo esc_html( $ec_news_cat_name ); ?></span><?php endif; ?>
 				</div>
-				<h3 class="ec-news-card__title"><?php echo esc_html( get_the_title( $ec_news_post_id ) ); ?></h3>
-				<p class="ec-news-card__excerpt"><?php echo esc_html( ec_nordheide_v2_news_excerpt( $ec_news_post_id ) ); ?></p>
+				<h3 class="ec-newsfeed-card__title"><?php echo esc_html( get_the_title( $ec_news_post_id ) ); ?></h3>
+				<p class="ec-newsfeed-card__excerpt"><?php echo esc_html( ec_nordheide_v2_news_excerpt( $ec_news_post_id ) ); ?></p>
 			</div>
 		</a>
 		<?php

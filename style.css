@@ -557,12 +557,12 @@ button { font-family: var(--ec-font); }
 /* ---------------------------------------------------------------
    EC News: Karten-Raster für den ec/news Block
 --------------------------------------------------------------- */
-.ec-news-grid {
+.ec-newsfeed-grid {
 	display: grid;
 	grid-template-columns: repeat( auto-fit, minmax( 260px, 1fr ) );
 	gap: 1.5rem;
 }
-.ec-news-card {
+.ec-newsfeed-card {
 	display: flex;
 	flex-direction: column;
 	background: var(--ec-surface);
@@ -573,20 +573,20 @@ button { font-family: var(--ec-font); }
 	text-decoration: none;
 	transition: transform .2s ease, box-shadow .2s ease;
 }
-.ec-news-card:hover, .ec-news-card:focus-visible {
+.ec-newsfeed-card:hover, .ec-newsfeed-card:focus-visible {
 	transform: translateY(-.3rem);
 	box-shadow: var(--ec-shadow);
 }
-.ec-news-card__media { aspect-ratio: 16 / 10; overflow: hidden; }
-.ec-news-card__media img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.ec-news-card__body { padding: 1.5rem; display: flex; flex-direction: column; gap: .5rem; }
-.ec-news-card__meta {
+.ec-newsfeed-card__media { aspect-ratio: 16 / 10; overflow: hidden; }
+.ec-newsfeed-card__media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.ec-newsfeed-card__body { padding: 1.5rem; display: flex; flex-direction: column; gap: .5rem; }
+.ec-newsfeed-card__meta {
 	font-size: .78rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase;
 	color: var(--ec-accent); display: flex; gap: .6rem; flex-wrap: wrap;
 }
-.ec-news-card__title { margin: 0; font-size: 1.2rem; font-weight: 800; color: var(--ec-ink); }
-.ec-news-card__excerpt { margin: 0; font-size: .95rem; color: var(--ec-ink-soft); }
-.ec-news-card--no-image .ec-news-card__body { padding-top: 1.75rem; }
+.ec-newsfeed-card__title { margin: 0; font-size: 1.2rem; font-weight: 800; color: var(--ec-ink); }
+.ec-newsfeed-card__excerpt { margin: 0; font-size: .95rem; color: var(--ec-ink-soft); }
+.ec-newsfeed-card--no-image .ec-newsfeed-card__body { padding-top: 1.75rem; }
 
 /* ---------------------------------------------------------------
    News
