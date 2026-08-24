@@ -160,10 +160,9 @@ add_action(
 /**
  * Fertige Startseite zum Einfügen: Seiten -> Neu -> Muster einfügen
  * -> "EC Nordheide: Startseite". Danach ganz normal im Editor anpassen.
- * Für "Neues aus der Nordheide" bitte zusätzlich einen normalen
- * Abfrage-Loop-Block einfügen (WordPress bringt dafür eigene,
- * geprüfte Muster mit) - das hier nachzubauen wäre fehleranfälliger
- * als das eingebaute WordPress-Muster zu verwenden.
+ * "Neues aus der Nordheide" nutzt den eigenen ec/news-Block (siehe
+ * blocks/news) - zeigt automatisch die neuesten Beiträge, Anzahl und
+ * Kategorie sind direkt am Block einstellbar.
  */
 add_action(
 	'init',
@@ -300,9 +299,7 @@ add_action(
 <p class="ec-copy">Geschichten, Einblicke und aktuelle Neuigkeiten aus unserem Kreisverband.</p>
 <!-- /wp:paragraph -->
 
-<!-- wp:paragraph {"style":{"typography":{"fontStyle":"italic"}}} -->
-<p style="font-style:italic">Tipp: Füge hier über das Block-Menü (+) einen "Abfrage-Loop"-Block ein und stelle ihn auf 3 Beiträge, um eure neuesten Artikel automatisch zu zeigen.</p>
-<!-- /wp:paragraph -->
+<!-- wp:ec/news {"postsPerPage":3,"categoryId":0} /-->
 </div>
 <!-- /wp:group -->
 
