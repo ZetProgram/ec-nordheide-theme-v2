@@ -61,7 +61,7 @@ add_action(
 		wp_register_script(
 			'ec-nordheide-v2-blocks-editor',
 			get_theme_file_uri( 'assets/js/blocks-editor.js' ),
-			array( 'wp-blocks', 'wp-element', 'wp-block-editor', 'wp-components', 'wp-i18n' ),
+			array( 'wp-blocks', 'wp-element', 'wp-block-editor', 'wp-components', 'wp-i18n', 'wp-data' ),
 			EC_NORDHEIDE_V2_VERSION,
 			true
 		);
