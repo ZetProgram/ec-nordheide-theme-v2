@@ -60,7 +60,7 @@ Für `ec/news` reicht eine rein statische Nachbildung nicht, weil die Vorschau d
 
 - `WP_Query` mit `post_type => post`, `post_status => publish`, `posts_per_page` aus dem Attribut, `ignore_sticky_posts => true`, und `cat => $categoryId` nur wenn `$categoryId > 0`.
 - Pro Treffer eine Karte, komplett als `<a>` verlinkt zum Beitrag (`get_permalink()`).
-- Bild: `has_post_thumbnail()` ? `get_the_post_thumbnail( $id, 'medium_large' )` in einem `.ec-news-card__media`-Wrapper : kein Bild-Element, Karte bekommt die Modifier-Klasse `ec-news-card--no-image`.
+- Bild: `has_post_thumbnail()` ? `get_the_post_thumbnail( $id, 'medium_large' )` in einem `.ec-newsfeed-card__media`-Wrapper : kein Bild-Element, Karte bekommt die Modifier-Klasse `ec-newsfeed-card--no-image`.
 - Kopfzeile in der Karte: Datum (`get_the_date()`) und Name der ersten zugeordneten Kategorie (`get_the_category()[0]->name`, falls vorhanden).
 - Titel: `get_the_title()`.
 - Textanfang: immer automatisch aus `post_content` geschnitten, unabhängig von einem manuell gesetzten Auszug-Feld:
@@ -88,15 +88,17 @@ Für `ec/news` reicht eine rein statische Nachbildung nicht, weil die Vorschau d
 
 ## Styling (`style.css`)
 
-Neue Klassen im bestehenden Namensschema, mit vorhandenen Design-Tokens (`--ec-surface`, `--ec-ink`, `--ec-ink-soft`, `--ec-accent`, `--ec-radius-lg`, `--ec-shadow-sm`, `--ec-shadow`):
+Neue Klassen im bestehenden Namensschema, mit vorhandenen Design-Tokens (`--ec-surface`, `--ec-ink`, `--ec-ink-soft`, `--ec-accent`, `--ec-radius-lg`, `--ec-shadow-sm`, `--ec-shadow`).
+
+**Korrektur während der Umsetzung:** `style.css` enthielt bereits eine ältere `.ec-news-card`/`.ec-news__list`-Familie, aktiv genutzt von `index.php`, `archive.php` und `search.php` für die normale Blog-Beitragsliste – das war beim Entwurf nicht geprüft worden. Deshalb nutzt der Block den eigenen Namensraum `ec-newsfeed-*` statt `ec-news-*`:
 
 ```css
-.ec-news-grid {
+.ec-newsfeed-grid {
 	display: grid;
 	grid-template-columns: repeat( auto-fit, minmax( 260px, 1fr ) );
 	gap: 1.5rem;
 }
-.ec-news-card {
+.ec-newsfeed-card {
 	display: flex;
 	flex-direction: column;
 	background: var(--ec-surface);
@@ -107,20 +109,20 @@ Neue Klassen im bestehenden Namensschema, mit vorhandenen Design-Tokens (`--ec-s
 	text-decoration: none;
 	transition: transform .2s ease, box-shadow .2s ease;
 }
-.ec-news-card:hover, .ec-news-card:focus-visible {
+.ec-newsfeed-card:hover, .ec-newsfeed-card:focus-visible {
 	transform: translateY(-.3rem);
 	box-shadow: var(--ec-shadow);
 }
-.ec-news-card__media { aspect-ratio: 16 / 10; overflow: hidden; }
-.ec-news-card__media img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.ec-news-card__body { padding: 1.5rem; display: flex; flex-direction: column; gap: .5rem; }
-.ec-news-card__meta {
+.ec-newsfeed-card__media { aspect-ratio: 16 / 10; overflow: hidden; }
+.ec-newsfeed-card__media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.ec-newsfeed-card__body { padding: 1.5rem; display: flex; flex-direction: column; gap: .5rem; }
+.ec-newsfeed-card__meta {
 	font-size: .78rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase;
 	color: var(--ec-accent); display: flex; gap: .6rem; flex-wrap: wrap;
 }
-.ec-news-card__title { margin: 0; font-size: 1.2rem; font-weight: 800; color: var(--ec-ink); }
-.ec-news-card__excerpt { margin: 0; font-size: .95rem; color: var(--ec-ink-soft); }
-.ec-news-card--no-image .ec-news-card__body { padding-top: 1.75rem; }
+.ec-newsfeed-card__title { margin: 0; font-size: 1.2rem; font-weight: 800; color: var(--ec-ink); }
+.ec-newsfeed-card__excerpt { margin: 0; font-size: .95rem; color: var(--ec-ink-soft); }
+.ec-newsfeed-card--no-image .ec-newsfeed-card__body { padding-top: 1.75rem; }
 ```
 
 ## Einbindung ins bestehende Muster
