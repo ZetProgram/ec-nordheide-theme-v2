@@ -1,0 +1,20 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "ec/news",
+	"title": "EC News",
+	"category": "ec-nordheide",
+	"icon": "grid-view",
+	"description": "Zeigt aktuelle WordPress-Beiträge als Karten-Raster - Bild, Titel, Datum, Kategorie, Textanfang.",
+	"keywords": [ "news", "beiträge", "artikel", "blog" ],
+	"supports": {
+		"html": false
+	},
+	"attributes": {
+		"postsPerPage": { "type": "number", "default": 3 },
+		"categoryId": { "type": "number", "default": 0 }
+	},
+	"textdomain": "ec-nordheide-v2",
+	"editorScript": "ec-nordheide-v2-blocks-editor",
+	"render": "file:./render.php"
+}

@@ -69,6 +69,7 @@ add_action(
 
 		register_block_type( get_theme_file_path( 'blocks/hero' ) );
 		register_block_type( get_theme_file_path( 'blocks/card' ) );
+		register_block_type( get_theme_file_path( 'blocks/news' ) );
 	}
 );
 
