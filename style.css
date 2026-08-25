@@ -2,7 +2,7 @@
 Theme Name: EC Nordheide v2
 Theme URI: https://www.ec-nordheide.de
 Description: Template für den EC Nordheide
-Version: 0.6.7
+Version: 0.6.8
 GitHub Theme URI: https://github.com/ZetProgram/ec-nordheide-theme-v2
 Primary Branch: production
 Author: Fabian Bross
@@ -553,6 +553,40 @@ button { font-family: var(--ec-font); }
 .ec-person-card h3 { margin: 0 0 .15rem; font-size: 1.1rem; font-weight: 800; }
 .ec-person-card p { margin: 0; color: var(--ec-ink-soft); font-size: .92rem; }
 .ec-person-card a.ec-text-link { display: inline-block; margin-top: .5rem; font-size: .92rem; }
+
+/* ---------------------------------------------------------------
+   EC News: Karten-Raster für den ec/news Block
+--------------------------------------------------------------- */
+.ec-newsfeed-grid {
+	display: grid;
+	grid-template-columns: repeat( auto-fit, minmax( 260px, 1fr ) );
+	gap: 1.5rem;
+}
+.ec-newsfeed-card {
+	display: flex;
+	flex-direction: column;
+	background: var(--ec-surface);
+	border-radius: var(--ec-radius-lg);
+	overflow: hidden;
+	box-shadow: var(--ec-shadow-sm);
+	color: inherit;
+	text-decoration: none;
+	transition: transform .2s ease, box-shadow .2s ease;
+}
+.ec-newsfeed-card:hover, .ec-newsfeed-card:focus-visible {
+	transform: translateY(-.3rem);
+	box-shadow: var(--ec-shadow);
+}
+.ec-newsfeed-card__media { aspect-ratio: 16 / 10; overflow: hidden; }
+.ec-newsfeed-card__media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.ec-newsfeed-card__body { padding: 1.5rem; display: flex; flex-direction: column; gap: .5rem; }
+.ec-newsfeed-card__meta {
+	font-size: .78rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase;
+	color: var(--ec-accent); display: flex; gap: .6rem; flex-wrap: wrap;
+}
+.ec-newsfeed-card__title { margin: 0; font-size: 1.2rem; font-weight: 800; color: var(--ec-ink); }
+.ec-newsfeed-card__excerpt { margin: 0; font-size: .95rem; color: var(--ec-ink-soft); }
+.ec-newsfeed-card--no-image .ec-newsfeed-card__body { padding-top: 1.75rem; }
 
 /* ---------------------------------------------------------------
    News

@@ -25,6 +25,8 @@
 	var TextControl = wp.components.TextControl;
 	var TextareaControl = wp.components.TextareaControl;
 	var SelectControl = wp.components.SelectControl;
+	var RangeControl = wp.components.RangeControl;
+	var useSelect = wp.data.useSelect;
 	var Button = wp.components.Button;
 	var __ = wp.i18n.__;
 
@@ -72,6 +74,31 @@
 				  )
 				: null
 		);
+	}
+
+	function formatNewsDate( dateString ) {
+		if ( ! dateString ) {
+			return '';
+		}
+		try {
+			return new Date( dateString ).toLocaleDateString();
+		} catch ( e ) {
+			return dateString;
+		}
+	}
+
+	function stripHtml( html ) {
+		var div = document.createElement( 'div' );
+		div.innerHTML = html || '';
+		return div.textContent || div.innerText || '';
+	}
+
+	function trimWords( text, count ) {
+		var words = text.trim().split( /\s+/ ).filter( Boolean );
+		if ( words.length <= count ) {
+			return words.join( ' ' );
+		}
+		return words.slice( 0, count ).join( ' ' ) + '…';
 	}
 
 	registerBlockType( 'ec/hero', {
@@ -251,6 +278,113 @@
 					)
 				),
 				el( 'div', blockProps, cardPreview( a ) )
+			);
+		},
+		save: function () {
+			return null;
+		},
+	} );
+
+	registerBlockType( 'ec/news', {
+		edit: function ( props ) {
+			var a = props.attributes;
+			var setAttributes = props.setAttributes;
+			var blockProps = useBlockProps( { className: 'ec-newsfeed-grid-editor-wrap' } );
+
+			var categories = useSelect( function ( select ) {
+				return select( 'core' ).getEntityRecords( 'taxonomy', 'category', { per_page: -1 } );
+			}, [] );
+
+			var posts = useSelect(
+				function ( select ) {
+					var query = {
+						per_page: a.postsPerPage || 3,
+						status: 'publish',
+						_embed: true,
+					};
+					if ( a.categoryId ) {
+						query.categories = a.categoryId;
+					}
+					return select( 'core' ).getEntityRecords( 'postType', 'post', query );
+				},
+				[ a.postsPerPage, a.categoryId ]
+			);
+
+			var categoryOptions = [ { label: __( 'Alle Kategorien', 'ec-nordheide-v2' ), value: 0 } ];
+			if ( categories ) {
+				categories.forEach( function ( term ) {
+					categoryOptions.push( { label: term.name, value: term.id } );
+				} );
+			}
+
+			var body;
+			if ( null === posts ) {
+				body = el( 'p', {}, __( 'Beiträge werden geladen …', 'ec-nordheide-v2' ) );
+			} else if ( 0 === posts.length ) {
+				body = el( 'p', {}, __( 'Keine Beiträge gefunden.', 'ec-nordheide-v2' ) );
+			} else {
+				body = el(
+					'div',
+					{ className: 'ec-newsfeed-grid' },
+					posts.map( function ( post ) {
+						var media = post._embedded && post._embedded[ 'wp:featuredmedia' ] && post._embedded[ 'wp:featuredmedia' ][ 0 ];
+						var imageUrl = media && media.source_url ? media.source_url : '';
+						var terms = post._embedded && post._embedded[ 'wp:term' ] ? post._embedded[ 'wp:term' ][ 0 ] : [];
+						var catName = terms && terms[ 0 ] ? terms[ 0 ].name : '';
+						var excerpt = trimWords( stripHtml( post.content && post.content.rendered ), 22 );
+						return el(
+							'div',
+							{
+								className: 'ec-newsfeed-card' + ( imageUrl ? '' : ' ec-newsfeed-card--no-image' ),
+								key: post.id,
+							},
+							imageUrl
+								? el( 'div', { className: 'ec-newsfeed-card__media' }, el( 'img', { src: imageUrl, alt: '' } ) )
+								: null,
+							el(
+								'div',
+								{ className: 'ec-newsfeed-card__body' },
+								el(
+									'div',
+									{ className: 'ec-newsfeed-card__meta' },
+									el( 'span', {}, formatNewsDate( post.date ) ),
+									catName ? el( 'span', {}, catName ) : null
+								),
+								el( 'h3', { className: 'ec-newsfeed-card__title' }, stripHtml( post.title && post.title.rendered ) ),
+								el( 'p', { className: 'ec-newsfeed-card__excerpt' }, excerpt )
+							)
+						);
+					} )
+				);
+			}
+
+			return el(
+				Fragment,
+				{},
+				el(
+					InspectorControls,
+					{},
+					el(
+						PanelBody,
+						{ title: __( 'Einstellungen', 'ec-nordheide-v2' ), initialOpen: true },
+						el( RangeControl, {
+							label: __( 'Anzahl der Beiträge', 'ec-nordheide-v2' ),
+							value: a.postsPerPage,
+							onChange: setter( setAttributes, 'postsPerPage' ),
+							min: 1,
+							max: 9,
+						} ),
+						el( SelectControl, {
+							label: __( 'Kategorie', 'ec-nordheide-v2' ),
+							value: a.categoryId,
+							options: categoryOptions,
+							onChange: function ( value ) {
+								setAttributes( { categoryId: parseInt( value, 10 ) || 0 } );
+							},
+						} )
+					)
+				),
+				el( 'div', blockProps, body )
 			);
 		},
 		save: function () {

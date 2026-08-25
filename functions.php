@@ -7,7 +7,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'EC_NORDHEIDE_V2_VERSION', '0.6.7' );
+define( 'EC_NORDHEIDE_V2_VERSION', '0.6.8' );
 
 // GitHub-basierte Theme-Updates. Das Repository wird als Release-Quelle verwendet.
 $ec_nordheide_update_checker = get_theme_file_path( 'lib/plugin-update-checker/plugin-update-checker.php' );
@@ -61,7 +61,7 @@ add_action(
 		wp_register_script(
 			'ec-nordheide-v2-blocks-editor',
 			get_theme_file_uri( 'assets/js/blocks-editor.js' ),
-			array( 'wp-blocks', 'wp-element', 'wp-block-editor', 'wp-components', 'wp-i18n' ),
+			array( 'wp-blocks', 'wp-element', 'wp-block-editor', 'wp-components', 'wp-i18n', 'wp-data' ),
 			EC_NORDHEIDE_V2_VERSION,
 			true
 		);
@@ -69,6 +69,7 @@ add_action(
 
 		register_block_type( get_theme_file_path( 'blocks/hero' ) );
 		register_block_type( get_theme_file_path( 'blocks/card' ) );
+		register_block_type( get_theme_file_path( 'blocks/news' ) );
 	}
 );
 
@@ -159,10 +160,9 @@ add_action(
 /**
  * Fertige Startseite zum Einfügen: Seiten -> Neu -> Muster einfügen
  * -> "EC Nordheide: Startseite". Danach ganz normal im Editor anpassen.
- * Für "Neues aus der Nordheide" bitte zusätzlich einen normalen
- * Abfrage-Loop-Block einfügen (WordPress bringt dafür eigene,
- * geprüfte Muster mit) - das hier nachzubauen wäre fehleranfälliger
- * als das eingebaute WordPress-Muster zu verwenden.
+ * "Neues aus der Nordheide" nutzt den eigenen ec/news-Block (siehe
+ * blocks/news) - zeigt automatisch die neuesten Beiträge, Anzahl und
+ * Kategorie sind direkt am Block einstellbar.
  */
 add_action(
 	'init',
@@ -299,9 +299,7 @@ add_action(
 <p class="ec-copy">Geschichten, Einblicke und aktuelle Neuigkeiten aus unserem Kreisverband.</p>
 <!-- /wp:paragraph -->
 
-<!-- wp:paragraph {"style":{"typography":{"fontStyle":"italic"}}} -->
-<p style="font-style:italic">Tipp: Füge hier über das Block-Menü (+) einen "Abfrage-Loop"-Block ein und stelle ihn auf 3 Beiträge, um eure neuesten Artikel automatisch zu zeigen.</p>
-<!-- /wp:paragraph -->
+<!-- wp:ec/news {"postsPerPage":3,"categoryId":0} /-->
 </div>
 <!-- /wp:group -->
 
