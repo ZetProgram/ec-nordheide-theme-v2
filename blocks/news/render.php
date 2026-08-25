@@ -10,12 +10,19 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Textanfang für die News-Karte: immer automatisch aus post_content
  * geschnitten, unabhängig von einem manuell gesetzten Auszug-Feld.
+ *
+ * In function_exists() gekapselt: WordPress lädt render.php bei jedem
+ * Rendern des Blocks per require() (nicht require_once), daher würde
+ * eine zweite Karte auf derselben Seite sonst zu einem Fatal Error
+ * "Cannot redeclare function" führen.
  */
-function ec_nordheide_v2_news_excerpt( $post_id, $words = 22 ) {
-	$content = get_post_field( 'post_content', $post_id );
-	$content = strip_shortcodes( $content );
-	$content = wp_strip_all_tags( $content );
-	return wp_trim_words( $content, $words, '…' );
+if ( ! function_exists( 'ec_nordheide_v2_news_excerpt' ) ) {
+	function ec_nordheide_v2_news_excerpt( $post_id, $words = 22 ) {
+		$content = get_post_field( 'post_content', $post_id );
+		$content = strip_shortcodes( $content );
+		$content = wp_strip_all_tags( $content );
+		return wp_trim_words( $content, $words, '…' );
+	}
 }
 
 $posts_per_page = ! empty( $attributes['postsPerPage'] ) ? max( 1, (int) $attributes['postsPerPage'] ) : 3;
