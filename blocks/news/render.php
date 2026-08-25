@@ -20,6 +20,10 @@ function ec_nordheide_v2_news_excerpt( $post_id, $words = 22 ) {
 
 $posts_per_page = ! empty( $attributes['postsPerPage'] ) ? max( 1, (int) $attributes['postsPerPage'] ) : 3;
 $category_id    = ! empty( $attributes['categoryId'] ) ? (int) $attributes['categoryId'] : 0;
+$show_category  = ! isset( $attributes['showCategory'] ) || $attributes['showCategory'];
+$meta_size      = ! empty( $attributes['metaFontSize'] ) ? (float) $attributes['metaFontSize'] : 0.78;
+$title_size     = ! empty( $attributes['titleFontSize'] ) ? (float) $attributes['titleFontSize'] : 1.2;
+$excerpt_size   = ! empty( $attributes['excerptFontSize'] ) ? (float) $attributes['excerptFontSize'] : 0.95;
 
 $query_args = array(
 	'post_type'           => 'post',
@@ -50,21 +54,25 @@ $wrapper_attributes = get_block_wrapper_attributes( array( 'class' => 'ec-newsfe
 		$ec_news_has_img  = has_post_thumbnail( $ec_news_post_id );
 		$ec_news_card_cls = 'ec-newsfeed-card' . ( $ec_news_has_img ? '' : ' ec-newsfeed-card--no-image' );
 		?>
-		<a class="<?php echo esc_attr( $ec_news_card_cls ); ?>" href="<?php echo esc_url( get_permalink( $ec_news_post_id ) ); ?>">
+		<?php $ec_news_permalink = get_permalink( $ec_news_post_id ); ?>
+		<div class="<?php echo esc_attr( $ec_news_card_cls ); ?>">
 			<?php if ( $ec_news_has_img ) : ?>
 				<div class="ec-newsfeed-card__media">
 					<?php echo get_the_post_thumbnail( $ec_news_post_id, 'medium_large' ); ?>
 				</div>
 			<?php endif; ?>
 			<div class="ec-newsfeed-card__body">
-				<div class="ec-newsfeed-card__meta">
+				<div class="ec-newsfeed-card__meta" style="font-size:<?php echo esc_attr( $meta_size ); ?>rem">
 					<span><?php echo esc_html( get_the_date( '', $ec_news_post_id ) ); ?></span>
-					<?php if ( $ec_news_cat_name ) : ?><span><?php echo esc_html( $ec_news_cat_name ); ?></span><?php endif; ?>
+					<?php if ( $show_category && $ec_news_cat_name ) : ?><span><?php echo esc_html( $ec_news_cat_name ); ?></span><?php endif; ?>
 				</div>
-				<h3 class="ec-newsfeed-card__title"><?php echo esc_html( get_the_title( $ec_news_post_id ) ); ?></h3>
-				<p class="ec-newsfeed-card__excerpt"><?php echo esc_html( ec_nordheide_v2_news_excerpt( $ec_news_post_id ) ); ?></p>
+				<h3 class="ec-newsfeed-card__title" style="font-size:<?php echo esc_attr( $title_size ); ?>rem">
+					<a class="ec-newsfeed-card__title-link" href="<?php echo esc_url( $ec_news_permalink ); ?>"><?php echo esc_html( get_the_title( $ec_news_post_id ) ); ?></a>
+				</h3>
+				<p class="ec-newsfeed-card__excerpt" style="font-size:<?php echo esc_attr( $excerpt_size ); ?>rem"><?php echo esc_html( ec_nordheide_v2_news_excerpt( $ec_news_post_id ) ); ?></p>
+				<a class="ec-newsfeed-card__readmore" href="<?php echo esc_url( $ec_news_permalink ); ?>"><?php esc_html_e( 'Weiterlesen', 'ec-nordheide-v2' ); ?> →</a>
 			</div>
-		</a>
+		</div>
 		<?php
 	endwhile;
 	wp_reset_postdata();
