@@ -31,6 +31,7 @@ $show_category  = ! isset( $attributes['showCategory'] ) || $attributes['showCat
 $meta_size      = ! empty( $attributes['metaFontSize'] ) ? (float) $attributes['metaFontSize'] : 0.78;
 $title_size     = ! empty( $attributes['titleFontSize'] ) ? (float) $attributes['titleFontSize'] : 1.2;
 $excerpt_size   = ! empty( $attributes['excerptFontSize'] ) ? (float) $attributes['excerptFontSize'] : 0.95;
+$columns        = ! empty( $attributes['columns'] ) ? max( 0, (int) $attributes['columns'] ) : 0;
 $card_max_width = ! empty( $attributes['cardMaxWidth'] ) ? max( 0, (int) $attributes['cardMaxWidth'] ) : 0;
 $meta_color     = ! empty( $attributes['metaColor'] ) ? sanitize_hex_color( $attributes['metaColor'] ) : '';
 $title_color    = ! empty( $attributes['titleColor'] ) ? sanitize_hex_color( $attributes['titleColor'] ) : '';
@@ -53,7 +54,11 @@ if ( ! $ec_news_query->have_posts() ) {
 	return;
 }
 
-$wrapper_attributes = get_block_wrapper_attributes( array( 'class' => 'ec-newsfeed-grid' ) );
+$wrapper_extra_args = array( 'class' => 'ec-newsfeed-grid' );
+if ( $columns ) {
+	$wrapper_extra_args['style'] = '--ec-newsfeed-columns:' . esc_attr( $columns );
+}
+$wrapper_attributes = get_block_wrapper_attributes( $wrapper_extra_args );
 ?>
 <div <?php echo $wrapper_attributes; /* phpcs:ignore, von WP escaped */ ?>>
 	<?php

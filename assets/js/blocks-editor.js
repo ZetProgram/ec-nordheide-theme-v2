@@ -327,6 +327,8 @@
 			var metaColor = a.metaColor || '';
 			var titleColor = a.titleColor || '';
 			var excerptColor = a.excerptColor || '';
+			var columns = a.columns || 0;
+			var gridStyle = columns ? { gridTemplateColumns: 'repeat(' + columns + ', minmax(0, 1fr))' } : {};
 
 			var body;
 			if ( null === posts ) {
@@ -336,7 +338,7 @@
 			} else {
 				body = el(
 					'div',
-					{ className: 'ec-newsfeed-grid' },
+					{ className: 'ec-newsfeed-grid', style: gridStyle },
 					posts.map( function ( post ) {
 						var media = post._embedded && post._embedded[ 'wp:featuredmedia' ] && post._embedded[ 'wp:featuredmedia' ][ 0 ];
 						var imageUrl = media && media.source_url ? media.source_url : '';
@@ -407,6 +409,13 @@
 							label: __( 'Kategorie auf der Karte anzeigen', 'ec-nordheide-v2' ),
 							checked: showCategory,
 							onChange: setter( setAttributes, 'showCategory' ),
+						} ),
+						el( RangeControl, {
+							label: __( 'Spalten (0 = automatisch)', 'ec-nordheide-v2' ),
+							value: columns,
+							onChange: setter( setAttributes, 'columns' ),
+							min: 0,
+							max: 4,
 						} )
 					),
 					el(
