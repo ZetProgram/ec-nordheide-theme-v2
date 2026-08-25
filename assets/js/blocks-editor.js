@@ -26,6 +26,7 @@
 	var TextareaControl = wp.components.TextareaControl;
 	var SelectControl = wp.components.SelectControl;
 	var RangeControl = wp.components.RangeControl;
+	var ToggleControl = wp.components.ToggleControl;
 	var useSelect = wp.data.useSelect;
 	var Button = wp.components.Button;
 	var __ = wp.i18n.__;
@@ -317,6 +318,11 @@
 				} );
 			}
 
+			var showCategory = false !== a.showCategory;
+			var metaSize = a.metaFontSize || 0.78;
+			var titleSize = a.titleFontSize || 1.2;
+			var excerptSize = a.excerptFontSize || 0.95;
+
 			var body;
 			if ( null === posts ) {
 				body = el( 'p', {}, __( 'Beiträge werden geladen …', 'ec-nordheide-v2' ) );
@@ -346,12 +352,13 @@
 								{ className: 'ec-newsfeed-card__body' },
 								el(
 									'div',
-									{ className: 'ec-newsfeed-card__meta' },
+									{ className: 'ec-newsfeed-card__meta', style: { fontSize: metaSize + 'rem' } },
 									el( 'span', {}, formatNewsDate( post.date ) ),
-									catName ? el( 'span', {}, catName ) : null
+									showCategory && catName ? el( 'span', {}, catName ) : null
 								),
-								el( 'h3', { className: 'ec-newsfeed-card__title' }, stripHtml( post.title && post.title.rendered ) ),
-								el( 'p', { className: 'ec-newsfeed-card__excerpt' }, excerpt )
+								el( 'h3', { className: 'ec-newsfeed-card__title', style: { fontSize: titleSize + 'rem' } }, stripHtml( post.title && post.title.rendered ) ),
+								el( 'p', { className: 'ec-newsfeed-card__excerpt', style: { fontSize: excerptSize + 'rem' } }, excerpt ),
+								el( 'span', { className: 'ec-newsfeed-card__readmore' }, __( 'Weiterlesen', 'ec-nordheide-v2' ) + ' →' )
 							)
 						);
 					} )
@@ -381,6 +388,39 @@
 							onChange: function ( value ) {
 								setAttributes( { categoryId: parseInt( value, 10 ) || 0 } );
 							},
+						} ),
+						el( ToggleControl, {
+							label: __( 'Kategorie auf der Karte anzeigen', 'ec-nordheide-v2' ),
+							checked: showCategory,
+							onChange: setter( setAttributes, 'showCategory' ),
+						} )
+					),
+					el(
+						PanelBody,
+						{ title: __( 'Textgrößen', 'ec-nordheide-v2' ), initialOpen: false },
+						el( RangeControl, {
+							label: __( 'Meta-Zeile (Datum/Kategorie)', 'ec-nordheide-v2' ),
+							value: metaSize,
+							onChange: setter( setAttributes, 'metaFontSize' ),
+							min: 0.6,
+							max: 1.4,
+							step: 0.02,
+						} ),
+						el( RangeControl, {
+							label: __( 'Titel', 'ec-nordheide-v2' ),
+							value: titleSize,
+							onChange: setter( setAttributes, 'titleFontSize' ),
+							min: 0.9,
+							max: 2.2,
+							step: 0.05,
+						} ),
+						el( RangeControl, {
+							label: __( 'Textanfang', 'ec-nordheide-v2' ),
+							value: excerptSize,
+							onChange: setter( setAttributes, 'excerptFontSize' ),
+							min: 0.7,
+							max: 1.6,
+							step: 0.05,
 						} )
 					)
 				),

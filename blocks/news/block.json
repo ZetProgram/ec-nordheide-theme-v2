@@ -12,7 +12,11 @@
 	},
 	"attributes": {
 		"postsPerPage": { "type": "number", "default": 3 },
-		"categoryId": { "type": "number", "default": 0 }
+		"categoryId": { "type": "number", "default": 0 },
+		"showCategory": { "type": "boolean", "default": true },
+		"metaFontSize": { "type": "number", "default": 0.78 },
+		"titleFontSize": { "type": "number", "default": 1.2 },
+		"excerptFontSize": { "type": "number", "default": 0.95 }
 	},
 	"textdomain": "ec-nordheide-v2",
 	"editorScript": "ec-nordheide-v2-blocks-editor",
