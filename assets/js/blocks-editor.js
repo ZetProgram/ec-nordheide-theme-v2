@@ -18,6 +18,7 @@
 	var Fragment = wp.element.Fragment;
 	var registerBlockType = wp.blocks.registerBlockType;
 	var InspectorControls = wp.blockEditor.InspectorControls;
+	var PanelColorSettings = wp.blockEditor.PanelColorSettings;
 	var useBlockProps = wp.blockEditor.useBlockProps;
 	var MediaUpload = wp.blockEditor.MediaUpload;
 	var MediaUploadCheck = wp.blockEditor.MediaUploadCheck;
@@ -322,6 +323,10 @@
 			var metaSize = a.metaFontSize || 0.78;
 			var titleSize = a.titleFontSize || 1.2;
 			var excerptSize = a.excerptFontSize || 0.95;
+			var cardMaxWidth = a.cardMaxWidth || 0;
+			var metaColor = a.metaColor || '';
+			var titleColor = a.titleColor || '';
+			var excerptColor = a.excerptColor || '';
 
 			var body;
 			if ( null === posts ) {
@@ -338,10 +343,19 @@
 						var terms = post._embedded && post._embedded[ 'wp:term' ] ? post._embedded[ 'wp:term' ][ 0 ] : [];
 						var catName = terms && terms[ 0 ] ? terms[ 0 ].name : '';
 						var excerpt = trimWords( stripHtml( post.content && post.content.rendered ), 22 );
+						var metaStyle = { fontSize: metaSize + 'rem' };
+						if ( metaColor ) { metaStyle.color = metaColor; }
+						var titleStyle = { fontSize: titleSize + 'rem' };
+						if ( titleColor ) { titleStyle.color = titleColor; }
+						var excerptStyle = { fontSize: excerptSize + 'rem' };
+						if ( excerptColor ) { excerptStyle.color = excerptColor; }
+						var cardStyle = cardMaxWidth ? { maxWidth: cardMaxWidth + 'px' } : {};
+
 						return el(
 							'div',
 							{
 								className: 'ec-newsfeed-card' + ( imageUrl ? '' : ' ec-newsfeed-card--no-image' ),
+								style: cardStyle,
 								key: post.id,
 							},
 							imageUrl
@@ -352,12 +366,12 @@
 								{ className: 'ec-newsfeed-card__body' },
 								el(
 									'div',
-									{ className: 'ec-newsfeed-card__meta', style: { fontSize: metaSize + 'rem' } },
+									{ className: 'ec-newsfeed-card__meta', style: metaStyle },
 									el( 'span', {}, formatNewsDate( post.date ) ),
 									showCategory && catName ? el( 'span', {}, catName ) : null
 								),
-								el( 'h3', { className: 'ec-newsfeed-card__title', style: { fontSize: titleSize + 'rem' } }, stripHtml( post.title && post.title.rendered ) ),
-								el( 'p', { className: 'ec-newsfeed-card__excerpt', style: { fontSize: excerptSize + 'rem' } }, excerpt ),
+								el( 'h3', { className: 'ec-newsfeed-card__title', style: titleStyle }, stripHtml( post.title && post.title.rendered ) ),
+								el( 'p', { className: 'ec-newsfeed-card__excerpt', style: excerptStyle }, excerpt ),
 								el( 'span', { className: 'ec-newsfeed-card__readmore' }, __( 'Weiterlesen', 'ec-nordheide-v2' ) + ' →' )
 							)
 						);
@@ -422,7 +436,40 @@
 							max: 1.6,
 							step: 0.05,
 						} )
-					)
+					),
+					el(
+						PanelBody,
+						{ title: __( 'Kartenbreite', 'ec-nordheide-v2' ), initialOpen: false },
+						el( RangeControl, {
+							label: __( 'Maximale Kartenbreite (0 = kein Limit)', 'ec-nordheide-v2' ),
+							value: cardMaxWidth,
+							onChange: setter( setAttributes, 'cardMaxWidth' ),
+							min: 0,
+							max: 600,
+							step: 10,
+						} )
+					),
+					el( PanelColorSettings, {
+						title: __( 'Textfarben', 'ec-nordheide-v2' ),
+						initialOpen: false,
+						colorSettings: [
+							{
+								value: metaColor,
+								onChange: setter( setAttributes, 'metaColor' ),
+								label: __( 'Meta-Zeile (Datum/Kategorie)', 'ec-nordheide-v2' ),
+							},
+							{
+								value: titleColor,
+								onChange: setter( setAttributes, 'titleColor' ),
+								label: __( 'Titel', 'ec-nordheide-v2' ),
+							},
+							{
+								value: excerptColor,
+								onChange: setter( setAttributes, 'excerptColor' ),
+								label: __( 'Textanfang', 'ec-nordheide-v2' ),
+							},
+						],
+					} )
 				),
 				el( 'div', blockProps, body )
 			);

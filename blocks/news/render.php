@@ -31,6 +31,10 @@ $show_category  = ! isset( $attributes['showCategory'] ) || $attributes['showCat
 $meta_size      = ! empty( $attributes['metaFontSize'] ) ? (float) $attributes['metaFontSize'] : 0.78;
 $title_size     = ! empty( $attributes['titleFontSize'] ) ? (float) $attributes['titleFontSize'] : 1.2;
 $excerpt_size   = ! empty( $attributes['excerptFontSize'] ) ? (float) $attributes['excerptFontSize'] : 0.95;
+$card_max_width = ! empty( $attributes['cardMaxWidth'] ) ? max( 0, (int) $attributes['cardMaxWidth'] ) : 0;
+$meta_color     = ! empty( $attributes['metaColor'] ) ? sanitize_hex_color( $attributes['metaColor'] ) : '';
+$title_color    = ! empty( $attributes['titleColor'] ) ? sanitize_hex_color( $attributes['titleColor'] ) : '';
+$excerpt_color  = ! empty( $attributes['excerptColor'] ) ? sanitize_hex_color( $attributes['excerptColor'] ) : '';
 
 $query_args = array(
 	'post_type'           => 'post',
@@ -61,22 +65,28 @@ $wrapper_attributes = get_block_wrapper_attributes( array( 'class' => 'ec-newsfe
 		$ec_news_has_img  = has_post_thumbnail( $ec_news_post_id );
 		$ec_news_card_cls = 'ec-newsfeed-card' . ( $ec_news_has_img ? '' : ' ec-newsfeed-card--no-image' );
 		?>
-		<?php $ec_news_permalink = get_permalink( $ec_news_post_id ); ?>
-		<div class="<?php echo esc_attr( $ec_news_card_cls ); ?>">
+		<?php
+		$ec_news_permalink  = get_permalink( $ec_news_post_id );
+		$ec_news_card_style = $card_max_width ? ' style="max-width:' . esc_attr( $card_max_width ) . 'px"' : '';
+		$ec_news_meta_style = 'font-size:' . esc_attr( $meta_size ) . 'rem' . ( $meta_color ? ';color:' . esc_attr( $meta_color ) : '' );
+		$ec_news_title_style = 'font-size:' . esc_attr( $title_size ) . 'rem' . ( $title_color ? ';color:' . esc_attr( $title_color ) : '' );
+		$ec_news_excerpt_style = 'font-size:' . esc_attr( $excerpt_size ) . 'rem' . ( $excerpt_color ? ';color:' . esc_attr( $excerpt_color ) : '' );
+		?>
+		<div class="<?php echo esc_attr( $ec_news_card_cls ); ?>"<?php echo $ec_news_card_style; /* phpcs:ignore, oben zusammengesetzt und escaped */ ?>>
 			<?php if ( $ec_news_has_img ) : ?>
 				<div class="ec-newsfeed-card__media">
 					<?php echo get_the_post_thumbnail( $ec_news_post_id, 'medium_large' ); ?>
 				</div>
 			<?php endif; ?>
 			<div class="ec-newsfeed-card__body">
-				<div class="ec-newsfeed-card__meta" style="font-size:<?php echo esc_attr( $meta_size ); ?>rem">
+				<div class="ec-newsfeed-card__meta" style="<?php echo $ec_news_meta_style; /* phpcs:ignore, oben zusammengesetzt und escaped */ ?>">
 					<span><?php echo esc_html( get_the_date( '', $ec_news_post_id ) ); ?></span>
 					<?php if ( $show_category && $ec_news_cat_name ) : ?><span><?php echo esc_html( $ec_news_cat_name ); ?></span><?php endif; ?>
 				</div>
-				<h3 class="ec-newsfeed-card__title" style="font-size:<?php echo esc_attr( $title_size ); ?>rem">
+				<h3 class="ec-newsfeed-card__title" style="<?php echo $ec_news_title_style; /* phpcs:ignore, oben zusammengesetzt und escaped */ ?>">
 					<a class="ec-newsfeed-card__title-link" href="<?php echo esc_url( $ec_news_permalink ); ?>"><?php echo esc_html( get_the_title( $ec_news_post_id ) ); ?></a>
 				</h3>
-				<p class="ec-newsfeed-card__excerpt" style="font-size:<?php echo esc_attr( $excerpt_size ); ?>rem"><?php echo esc_html( ec_nordheide_v2_news_excerpt( $ec_news_post_id ) ); ?></p>
+				<p class="ec-newsfeed-card__excerpt" style="<?php echo $ec_news_excerpt_style; /* phpcs:ignore, oben zusammengesetzt und escaped */ ?>"><?php echo esc_html( ec_nordheide_v2_news_excerpt( $ec_news_post_id ) ); ?></p>
 				<a class="ec-newsfeed-card__readmore" href="<?php echo esc_url( $ec_news_permalink ); ?>"><?php esc_html_e( 'Weiterlesen', 'ec-nordheide-v2' ); ?> →</a>
 			</div>
 		</div>
